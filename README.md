@@ -137,12 +137,12 @@ void read()
         output_indicator(1); // sound is not detected when this led is high
         if(bulb == 1)
         {
-            bulb == 0;
+            bulb = 0;
             output_bulb(0);//digitalWrite(bulb, LOW);
         }
         else
         {
-            bulb == 1;
+            bulb = 1;
             output_bulb(1);//digitalWrite(bulb, HIGH);
         }
         delay(2000);// waiting for almost 1 sec before sensing the input so that the present sound subsides
