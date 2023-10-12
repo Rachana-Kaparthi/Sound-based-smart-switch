@@ -76,7 +76,7 @@ Disassembly of section .text:
    10184:	fef42423          	sw	a5,-24(s0)
    10188:	fe842703          	lw	a4,-24(s0)
    1018c:	000f47b7          	lui	a5,0xf4
-   10190:	23f78793          	add	a5,a5,575 # f423f <__global_pointer$+0xe2807>
+   10190:	23f78793          	add	a5,a5,575 # f423f <__global_pointer$+0xe27f3>
    10194:	fee7d4e3          	bge	a5,a4,1017c <delay+0x20>
    10198:	fec42783          	lw	a5,-20(s0)
    1019c:	00178793          	add	a5,a5,1
@@ -99,24 +99,29 @@ Disassembly of section .text:
    101d8:	fea42623          	sw	a0,-20(s0)
    101dc:	fec42703          	lw	a4,-20(s0)
    101e0:	00100793          	li	a5,1
-   101e4:	04f71063          	bne	a4,a5,10224 <read+0x60>
+   101e4:	04f71a63          	bne	a4,a5,10238 <read+0x74>
    101e8:	00100513          	li	a0,1
    101ec:	ee9ff0ef          	jal	100d4 <output_indicator>
    101f0:	000117b7          	lui	a5,0x11
-   101f4:	2387a703          	lw	a4,568(a5) # 11238 <__DATA_BEGIN__>
+   101f4:	24c7a703          	lw	a4,588(a5) # 1124c <__DATA_BEGIN__>
    101f8:	00100793          	li	a5,1
-   101fc:	00f71863          	bne	a4,a5,1020c <read+0x48>
-   10200:	00000513          	li	a0,0
-   10204:	f15ff0ef          	jal	10118 <output_bulb>
-   10208:	00c0006f          	j	10214 <read+0x50>
-   1020c:	00100513          	li	a0,1
-   10210:	f09ff0ef          	jal	10118 <output_bulb>
-   10214:	1f400513          	li	a0,500
-   10218:	f45ff0ef          	jal	1015c <delay>
-   1021c:	00000513          	li	a0,0
-   10220:	eb5ff0ef          	jal	100d4 <output_indicator>
-   10224:	00000013          	nop
-   10228:	01c12083          	lw	ra,28(sp)
-   1022c:	01812403          	lw	s0,24(sp)
-   10230:	02010113          	add	sp,sp,32
-   10234:	00008067          	ret
+   101fc:	00f71c63          	bne	a4,a5,10214 <read+0x50>
+   10200:	000117b7          	lui	a5,0x11
+   10204:	2407a623          	sw	zero,588(a5) # 1124c <__DATA_BEGIN__>
+   10208:	00000513          	li	a0,0
+   1020c:	f0dff0ef          	jal	10118 <output_bulb>
+   10210:	0180006f          	j	10228 <read+0x64>
+   10214:	000117b7          	lui	a5,0x11
+   10218:	00100713          	li	a4,1
+   1021c:	24e7a623          	sw	a4,588(a5) # 1124c <__DATA_BEGIN__>
+   10220:	00100513          	li	a0,1
+   10224:	ef5ff0ef          	jal	10118 <output_bulb>
+   10228:	1f400513          	li	a0,500
+   1022c:	f31ff0ef          	jal	1015c <delay>
+   10230:	00000513          	li	a0,0
+   10234:	ea1ff0ef          	jal	100d4 <output_indicator>
+   10238:	00000013          	nop
+   1023c:	01c12083          	lw	ra,28(sp)
+   10240:	01812403          	lw	s0,24(sp)
+   10244:	02010113          	add	sp,sp,32
+   10248:	00008067          	ret
