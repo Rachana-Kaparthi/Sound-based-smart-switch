@@ -46,7 +46,7 @@ Access the riscv32-unknown-elf-gcc inside bin folder of riscv32-toolchain folder
 
 ## Introduction 
 ### Application Overview
-  I am trying to build a smart switch using sound sensor module. Initially we set the sensor threshold to a value so that any sound heard above the threshold is detected as high by the sensor and the same is sent to the processor. Processor checks the previous state of the switch and decides whether to turn the switch on or off based on its previous value. It turns the switch on if the previous value is low or turns the switch off if the previous value is high.I have set a time delay of 2 secs for two consecutive sensor read operations if sensor reads high for the first time so that the processor is not detecting the same clap twice before the sound is elapsed. I have used an indicator led so that user know when sound is being detected. The output of the switch can be connected to any home appliance such as light, fan etc using relays or motors at the output.
+  I am trying to build a smart switch using sound sensor module. Initially we set the sensor threshold by rotating the screw in the sensor module so that any sound heard above the threshold is detected as high by the sensor and the same is sent to the processor. Processor checks the previous state of the switch and decides whether to turn the switch on or off based on its previous value. It turns the switch on if the previous value is low or turns the switch off if the previous value is high.I have set a time delay of 2 secs for two consecutive sensor read operations if sensor reads high for the first time so that the processor is not detecting the same clap twice before the sound is elapsed. I have used an indicator led so that user know when sound is being detected. The output of the switch can be connected to any home appliance such as light, fan etc using relays or motors at the output.
 ### Block Diagram  
 ![block-diagram-single-clap-switch](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/d6584d81-4c49-42c6-830b-5ebf6ba6ca84)
 
@@ -98,7 +98,7 @@ int sensor_data()
 }
 void output_indicator(int value)
 {
-    unsigned int mask = 0xFFFFFFFD; // output to x30[1]
+    unsigned int mask = 0xFFFFFFFD; // output to indicator led
     int value1 = value*2;
     asm volatile(
         "and x30,x30, %1\n\t"
@@ -110,7 +110,7 @@ void output_indicator(int value)
 }
 void output_bulb(int value)
 {
-    unsigned int mask = 0xFFFFFFFB;
+    unsigned int mask = 0xFFFFFFFB; // output to switch
     int value1 = value*4;
     asm volatile(
         "and x30,x30, %1\n\t"
