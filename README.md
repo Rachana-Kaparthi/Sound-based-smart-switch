@@ -190,23 +190,22 @@ Suppose your assembly code contains instructions like addi, lw, sw, and so on. R
 ```
 Number of different instructions: 16
 List of unique instructions:
-sw
-and
-bne
-blt
 lui
-nop
-mv
-or
-add
-j
-sll
-bge
 lw
-jal
 li
+nop
+bne
 ret
-
+sll
+or
+j
+add
+mv
+jal
+sw
+blt
+bge
+and
 ```
 
 
