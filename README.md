@@ -48,7 +48,7 @@ Access the riscv32-unknown-elf-gcc inside bin folder of riscv32-toolchain folder
 ### Application Overview
   I am trying to build a smart switch using sound sensor module. Initially we set the sensor threshold to a value so that any sound heard above the threshold is detected as high by the sensor and the same is sent to the processor. Processor checks the previous state of the switch and decides whether to turn the switch on or off based on its previous value. It turns the switch on if the previous value is low or turns the switch off if the previous value is high.I have set a time delay of 2 secs for two consecutive sensor read operations if sensor reads high for the first time so that the processor is not detecting the same clap twice before the sound is elapsed. I have used an indicator led so that user know when sound is being detected. The output of the switch can be connected to any home appliance such as light, fan etc using relays or motors at the output.
 ### Block Diagram  
-![block-diagram-clap-switch](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/260a92d6-86a1-408d-a752-829760196ada)  
+![block-diagram-single-clap-switch](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/d6584d81-4c49-42c6-830b-5ebf6ba6ca84)
 
 ### Flowchart of the code
 ![single_clap_switch](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/c1cf3748-82fa-47d9-bb62-0dc62e0c97f2)
