@@ -85,7 +85,7 @@ int main()
 int sensor_data()
 {
     int data;
-    // Read sensor data into x30
+    // Read sensor data from x30
     asm volatile(
             "and %0, x30, 1"
             : "=r"(data)
@@ -145,7 +145,7 @@ void read()
             bulb == 1;
             output_bulb(1);//digitalWrite(bulb, HIGH);
         }
-        delay(500);// waiting for almost 1 sec before sensing the input so that the present sound subsides
+        delay(2000);// waiting for almost 1 sec before sensing the input so that the present sound subsides
         output_indicator(0); // sound is only detected when this led goes low
         //digitalWrite(indicator, LOW);
     }
