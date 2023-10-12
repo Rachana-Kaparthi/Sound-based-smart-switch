@@ -154,13 +154,15 @@ void read()
 }
 
 ```
+
+Test file for the above C code can be seen [here](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/blob/main/clap_switch_test.c).   
+
 C code can be compiled by running the below commands in terminal -  
 ```
 gcc clap_switch.c
 ./a.out
 ```
 
-Test file for the above C code can be seen [here](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/blob/main/clap_switch_test.c).   
 Below is the output seen upon execution of the test file using gcc compiler-  
 ![](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/blob/main/images/single_clap_switch_test_output.png)  
 
