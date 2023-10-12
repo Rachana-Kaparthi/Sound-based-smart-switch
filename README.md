@@ -174,7 +174,7 @@ Below is the output seen upon execution of the test file using gcc compiler-
 Compile the c program using RISCV-V GNU Toolchain and dump the assembly code into obj_dump.txt using the below commands.  
 
 ```
-riscv32-unknown-elf-gcc -c -mabi=ilp32 -march=rv32im -ffreestanding -nostdlib -o ./clap_switch clap_switch.c
+riscv32-unknown-elf-gcc -mabi=ilp32 -march=rv32im -ffreestanding -nostdlib -o ./clap_switch clap_switch.c
 riscv32-unknown-elf-objdump -d -r clap_switch|less > assembly.txt
 ```
 The written assembly.txt file can be seen [here](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/blob/main/assembly.txt).  
