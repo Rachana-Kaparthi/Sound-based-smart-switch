@@ -64,10 +64,6 @@ x30[2] - output to switch
 
 Code snippet of Clap switch is shown below:  
 ```
-
-
-
-int indicator = 0;
 int bulb = 0;
 
 void output_indicator(int value);
