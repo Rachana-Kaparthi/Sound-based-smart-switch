@@ -64,19 +64,40 @@ x30[2] - output to switch
 
 Code snippet of Clap switch is shown below:  
 ```
-int bulb = 0;
+//int indicator = 0;
+// int offClap1 = 0;
 
 void output_indicator(int value);
 void output_bulb(int value);
 int sensor_data();
 void delay(int seconds);
-void read();
 
 int main()
 {
+    int bulb = 0;
     while (1)
     {
-        read();
+        // sensor_input = digital_read(0);
+        int sensor_input = sensor_data();
+    
+        if (sensor_input == 1)
+        {
+            //digitalWrite(indicator, HIGH);
+            output_indicator(1); // sound is not detected when this led is high
+            if(bulb == 1)
+            {
+                bulb = 0;
+                output_bulb(0);//digitalWrite(bulb, LOW);
+            }
+            else
+            {
+                bulb = 1;
+                output_bulb(1);//digitalWrite(bulb, HIGH);
+            }
+            delay(500);// waiting for almost 1 sec before sensing the input so that the present sound subsides
+            output_indicator(0); // sound is only detected when this led goes low
+            //digitalWrite(indicator, LOW);
+        }
     }
 
     return (0);
@@ -85,7 +106,7 @@ int main()
 int sensor_data()
 {
     int data;
-    // Read sensor data from x30
+    // Read sensor data into x30
     asm volatile(
             "and %0, x30, 1"
             : "=r"(data)
@@ -94,7 +115,7 @@ int sensor_data()
 }
 void output_indicator(int value)
 {
-    unsigned int mask = 0xFFFFFFFD; // output to indicator led
+    unsigned int mask = 0xFFFFFFFD; // output to x30[1]
     int value1 = value*2;
     asm volatile(
         "and x30,x30, %1\n\t"
@@ -106,7 +127,7 @@ void output_indicator(int value)
 }
 void output_bulb(int value)
 {
-    unsigned int mask = 0xFFFFFFFB; // output to switch
+    unsigned int mask = 0xFFFFFFFB;
     int value1 = value*4;
     asm volatile(
         "and x30,x30, %1\n\t"
@@ -124,33 +145,6 @@ void delay(int seconds) {
             // Adding a loop inside to create some delay as sound may last for some time
         }
     }
-}
-
-void read()
-{
-    // sensor_input = digital_read(0);
-    int sensor_input = sensor_data();
-   
-    if (sensor_input == 1)
-    {
-        //digitalWrite(indicator, HIGH);
-        output_indicator(1); // sound is not detected when this led is high
-        if(bulb == 1)
-        {
-            bulb = 0;
-            output_bulb(0);//digitalWrite(bulb, LOW);
-        }
-        else
-        {
-            bulb = 1;
-            output_bulb(1);//digitalWrite(bulb, HIGH);
-        }
-        delay(2000);// waiting for almost 1 sec before sensing the input so that the present sound subsides
-        output_indicator(0); // sound is only detected when this led goes low
-        //digitalWrite(indicator, LOW);
-    }
-
-    
 }
 
 ```
@@ -172,8 +166,8 @@ Below is the output seen upon execution of the test file using gcc compiler-
 Compile the c program using RISCV-V GNU Toolchain and dump the assembly code into obj_dump.txt using the below commands.  
 
 ```
-riscv32-unknown-elf-gcc -mabi=ilp32 -march=rv32im -ffreestanding -nostdlib -o ./clap_switch clap_switch.c
-riscv32-unknown-elf-objdump -d -r clap_switch|less > assembly.txt
+riscv64-unknown-elf-gcc -march=rv32i -mabi=ilp32 -ffreestanding -nostdlib -o out clap_switch.c
+riscv64-unknown-elf-objdump -d -r out > assembly.txt
 ```
 The written assembly.txt file can be seen [here](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/blob/main/assembly.txt).  
 
@@ -188,24 +182,25 @@ To get the number of instructions, run the python script file instruction_counte
 Suppose your assembly code contains instructions like addi, lw, sw, and so on. Running the instruction_counter.py on this assembly.txt would yield: 
 
 ```
-Number of different instructions: 16
+Number of different instructions: 17
 List of unique instructions:
-lui
-lw
-li
-nop
-bne
-ret
-sll
-or
 j
-add
-mv
+bne
 jal
-sw
-blt
-bge
+nop
 and
+bge
+li
+sw
+mv
+addi
+slli
+lw
+ret
+or
+andi
+blt
+lui
 ```
 
 
