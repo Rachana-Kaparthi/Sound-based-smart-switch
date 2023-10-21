@@ -64,7 +64,6 @@ x30[2] - output to switch
 
 Code snippet of Clap switch is shown below:  
 ```
-
 void output_indicator(int value);
 void output_bulb(int value);
 int sensor_data();
@@ -108,6 +107,8 @@ int sensor_data()
     asm volatile(
             "and %0, x30, 1"
             : "=r"(data)
+            :
+            :
         );
     return data;
 }
