@@ -336,12 +336,12 @@ int main()
         int sensor_input = sensor_data(sensor_inp);
         //register_value();
     
-        if (sensor_input == 1)
+        if (sensor_input)
         {
             //digitalWrite(indicator, HIGH);
             output_indicator(1); // sound is not detected when this led is high
             
-            if(bulb == 1)
+            if(bulb)
             {
                 bulb = 0;
                 output_bulb(0);//digitalWrite(bulb, LOW);
