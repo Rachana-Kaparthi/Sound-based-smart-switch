@@ -202,5 +202,173 @@ blt
 lui
 ```
 
+#### C code for Spike debug  
+```
+#include<stdio.h>
+
+void output_indicator(int value);
+void output_bulb(int value);
+int sensor_data(int value);
+void delay(int seconds);
+
+int main()
+{
+    int bulb = 0;
+    //debugging
+   
+    int indicator = 0;
+    int i = 0;
+    int j = 0;
+    int sensor_inp= 0;
+
+    //debugging
+    while (j< 30)
+    {
+        if(i == 5) sensor_inp = 1;
+        // sensor_input = digital_read(0);
+        int sensor_input = sensor_data(sensor_inp);
+        //register_value();
+    
+        if (sensor_input == 1)
+        {
+            //digitalWrite(indicator, HIGH);
+            output_indicator(1); // sound is not detected when this led is high
+            
+            if(bulb == 1)
+            {
+                bulb = 0;
+                output_bulb(0);//digitalWrite(bulb, LOW);
+               
+            }
+            else
+            {
+                bulb = 1;
+                output_bulb(1);//digitalWrite(bulb, HIGH);
+              
+            }
+            delay(200);// waiting for almost 1 sec before sensing the input so that the present sound subsides
+            output_indicator(0); // sound is only detected when this led goes low
+            //register_value();
+            //digitalWrite(indicator, LOW);
+        }
+        //debugging
+        if(i == 5) { sensor_inp = 0; i = 0;}
+        i++;
+        j++;
+        //debugging
+    }
+
+    return (0);
+}
+
+int sensor_data(int value)
+{
+    //debugging
+    printf("Entering sensor_read\n");
+    //debugging
+
+    //debugging
+	int mask=0xFFFFFFFE;
+	
+	asm volatile(
+		"and x30,x30,%0\n\t"
+    "or x30, x30, %1\n\t"
+	    	:
+	    	:"r"(mask),"r"(value)
+	    	:"x30"
+	    	);
+	//debugging  
+
+    int data;
+    // Read sensor data into x30
+    asm volatile(
+            "andi %0, x30, 0x0001\n\t"
+            : "=r"(data)
+            :
+            :
+        );
+    
+    printf("Input_data is %d\n",data);
+    return data;
+}
+void output_indicator(int value)
+{
+    printf("Entering output_indicator\n");
+
+    unsigned int mask = 0xFFFFFFFD; // output to x30[1]
+    int value1 = value*2;
+    asm volatile(
+        "and x30,x30, %1\n\t"
+        "or x30,x30, %0\n\t"
+        :
+        :"r"(value1),"r"(mask)
+        :"x30" //clobber list,indicating that x30 is modified
+    );
+
+    //debugging
+     int data;
+     int indicator;
+    // Read sensor data into x30
+    asm volatile(
+            "andi %0, x30, 0x0002"
+            : "=r"(data)
+        );
+    if(data == 2) indicator = 1;
+    if(data == 0) indicator = 0;
+    //debugging   
+   
+    printf("Setting Indicator value to %d\n",indicator);
+    
+}
+void output_bulb(int value)
+{
+    printf("Entering output_bulb\n");
+
+    unsigned int mask = 0xFFFFFFFB;
+    int value1 = value*4;
+    asm volatile(
+        "and x30,x30, %1\n\t"
+        "or x30,x30, %0\n\t"
+        :
+        :"r"(value1),"r"(mask)
+        :"x30"//clobber list,indicating that x30 is modified
+    );
+
+    //debugging
+     int data;
+     int bulb;
+    // Read sensor data into x30
+    asm volatile(
+            "andi %0, x30, 0x0004"
+            : "=r"(data)
+            :
+            :
+        );
+    if(data == 4) bulb = 1;
+    if(data == 0) bulb = 0;
+
+    printf("Setting bulb value to %d\n",bulb);
+   
+}
+
+void delay(int seconds) {
+    printf("Entering delay to wait for some time before turning off the indicator\n");
+    int i, j;
+    for (i = 0; i < seconds; i++) {
+        for (j = 0; j < 1000000; j++) {
+            // Adding a loop inside to create some delay as sound may last for some time
+        }
+    }
+}
+
+
+```
+**output in the terminal**  
+![spike_debug](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/8c9f70eb-500a-42e6-8072-8c05ef5052a4)  
+
+For 
+
+
+
 
 
