@@ -169,7 +169,123 @@ Compile the c program using RISCV-V GNU Toolchain and dump the assembly code int
 riscv64-unknown-elf-gcc -march=rv32i -mabi=ilp32 -ffreestanding -nostdlib -o out clap_switch.c
 riscv64-unknown-elf-objdump -d -r out > assembly.txt
 ```
-The written assembly.txt file can be seen [here](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/blob/main/assembly.txt).  
+The written assembly.txt file can be seen [here](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/blob/main/assembly.txt).    
+Assemvly code:  
+```
+
+out:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00010054 <main>:
+   10054:	fe010113          	addi	sp,sp,-32
+   10058:	00112e23          	sw	ra,28(sp)
+   1005c:	00812c23          	sw	s0,24(sp)
+   10060:	02010413          	addi	s0,sp,32
+   10064:	fe042623          	sw	zero,-20(s0)
+   10068:	05c000ef          	jal	ra,100c4 <sensor_data>
+   1006c:	fea42423          	sw	a0,-24(s0)
+   10070:	fe842703          	lw	a4,-24(s0)
+   10074:	00100793          	li	a5,1
+   10078:	fef718e3          	bne	a4,a5,10068 <main+0x14>
+   1007c:	00100513          	li	a0,1
+   10080:	06c000ef          	jal	ra,100ec <output_indicator>
+   10084:	fec42703          	lw	a4,-20(s0)
+   10088:	00100793          	li	a5,1
+   1008c:	00f71a63          	bne	a4,a5,100a0 <main+0x4c>
+   10090:	fe042623          	sw	zero,-20(s0)
+   10094:	00000513          	li	a0,0
+   10098:	098000ef          	jal	ra,10130 <output_bulb>
+   1009c:	0140006f          	j	100b0 <main+0x5c>
+   100a0:	00100793          	li	a5,1
+   100a4:	fef42623          	sw	a5,-20(s0)
+   100a8:	00100513          	li	a0,1
+   100ac:	084000ef          	jal	ra,10130 <output_bulb>
+   100b0:	1f400513          	li	a0,500
+   100b4:	0c0000ef          	jal	ra,10174 <delay>
+   100b8:	00000513          	li	a0,0
+   100bc:	030000ef          	jal	ra,100ec <output_indicator>
+   100c0:	fa9ff06f          	j	10068 <main+0x14>
+
+000100c4 <sensor_data>:
+   100c4:	fe010113          	addi	sp,sp,-32
+   100c8:	00812e23          	sw	s0,28(sp)
+   100cc:	02010413          	addi	s0,sp,32
+   100d0:	001f7793          	andi	a5,t5,1
+   100d4:	fef42623          	sw	a5,-20(s0)
+   100d8:	fec42783          	lw	a5,-20(s0)
+   100dc:	00078513          	mv	a0,a5
+   100e0:	01c12403          	lw	s0,28(sp)
+   100e4:	02010113          	addi	sp,sp,32
+   100e8:	00008067          	ret
+
+000100ec <output_indicator>:
+   100ec:	fd010113          	addi	sp,sp,-48
+   100f0:	02812623          	sw	s0,44(sp)
+   100f4:	03010413          	addi	s0,sp,48
+   100f8:	fca42e23          	sw	a0,-36(s0)
+   100fc:	ffd00793          	li	a5,-3
+   10100:	fef42623          	sw	a5,-20(s0)
+   10104:	fdc42783          	lw	a5,-36(s0)
+   10108:	00179793          	slli	a5,a5,0x1
+   1010c:	fef42423          	sw	a5,-24(s0)
+   10110:	fe842783          	lw	a5,-24(s0)
+   10114:	fec42703          	lw	a4,-20(s0)
+   10118:	00ef7f33          	and	t5,t5,a4
+   1011c:	00ff6f33          	or	t5,t5,a5
+   10120:	00000013          	nop
+   10124:	02c12403          	lw	s0,44(sp)
+   10128:	03010113          	addi	sp,sp,48
+   1012c:	00008067          	ret
+
+00010130 <output_bulb>:
+   10130:	fd010113          	addi	sp,sp,-48
+   10134:	02812623          	sw	s0,44(sp)
+   10138:	03010413          	addi	s0,sp,48
+   1013c:	fca42e23          	sw	a0,-36(s0)
+   10140:	ffb00793          	li	a5,-5
+   10144:	fef42623          	sw	a5,-20(s0)
+   10148:	fdc42783          	lw	a5,-36(s0)
+   1014c:	00279793          	slli	a5,a5,0x2
+   10150:	fef42423          	sw	a5,-24(s0)
+   10154:	fe842783          	lw	a5,-24(s0)
+   10158:	fec42703          	lw	a4,-20(s0)
+   1015c:	00ef7f33          	and	t5,t5,a4
+   10160:	00ff6f33          	or	t5,t5,a5
+   10164:	00000013          	nop
+   10168:	02c12403          	lw	s0,44(sp)
+   1016c:	03010113          	addi	sp,sp,48
+   10170:	00008067          	ret
+
+00010174 <delay>:
+   10174:	fd010113          	addi	sp,sp,-48
+   10178:	02812623          	sw	s0,44(sp)
+   1017c:	03010413          	addi	s0,sp,48
+   10180:	fca42e23          	sw	a0,-36(s0)
+   10184:	fe042623          	sw	zero,-20(s0)
+   10188:	0340006f          	j	101bc <delay+0x48>
+   1018c:	fe042423          	sw	zero,-24(s0)
+   10190:	0100006f          	j	101a0 <delay+0x2c>
+   10194:	fe842783          	lw	a5,-24(s0)
+   10198:	00178793          	addi	a5,a5,1
+   1019c:	fef42423          	sw	a5,-24(s0)
+   101a0:	fe842703          	lw	a4,-24(s0)
+   101a4:	000f47b7          	lui	a5,0xf4
+   101a8:	23f78793          	addi	a5,a5,575 # f423f <__global_pointer$+0xe2867>
+   101ac:	fee7d4e3          	bge	a5,a4,10194 <delay+0x20>
+   101b0:	fec42783          	lw	a5,-20(s0)
+   101b4:	00178793          	addi	a5,a5,1
+   101b8:	fef42623          	sw	a5,-20(s0)
+   101bc:	fec42703          	lw	a4,-20(s0)
+   101c0:	fdc42783          	lw	a5,-36(s0)
+   101c4:	fcf744e3          	blt	a4,a5,1018c <delay+0x18>
+   101c8:	00000013          	nop
+   101cc:	02c12403          	lw	s0,44(sp)
+   101d0:	03010113          	addi	sp,sp,48
+   101d4:	00008067          	ret
+```
+
 
 
 **Note** 
