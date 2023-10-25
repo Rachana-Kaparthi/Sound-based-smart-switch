@@ -363,10 +363,15 @@ void delay(int seconds) {
 
 
 ```
+Commands for debugging:
+```
+riscv64-unknown-elf-gcc -march=rv64i -mabi=lp64 -ffreestanding -o out single_clap_switch_copy.c 
+spike pk out
+```
+
 **output in the terminal**  
 ![spike_debug](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/8c9f70eb-500a-42e6-8072-8c05ef5052a4)  
 
-For 
 
 
 
