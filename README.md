@@ -51,7 +51,8 @@ Access the riscv32-unknown-elf-gcc inside bin folder of riscv32-toolchain folder
 ![block-diagram-single-clap-switch](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/d6584d81-4c49-42c6-830b-5ebf6ba6ca84)
 
 ### Flowchart of the code
-![single_clap_switch](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/c1cf3748-82fa-47d9-bb62-0dc62e0c97f2)
+![image](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/c598757c-9a18-489f-bea4-db8220d0bf80)
+
 
 ### C code  
 **Register architecture of x30 for GPIOs:**  
