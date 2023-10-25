@@ -139,7 +139,7 @@ void output_bulb(int value)
 }
 
 void delay(int seconds) {
-    int i, j;
+    int i;
     for (i = 0; i < seconds; i++) {
     }
 }
