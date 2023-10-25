@@ -92,7 +92,7 @@ int main()
                 bulb = 1;
                 output_bulb(1);//digitalWrite(bulb, HIGH);
             }
-            delay(500);// waiting for almost 1 sec before sensing the input so that the present sound subsides
+            delay(10);// waiting for almost 1 sec before sensing the input so that the present sound subsides
             output_indicator(0); // sound is only detected when this led goes low
             //digitalWrite(indicator, LOW);
         }
@@ -141,9 +141,6 @@ void output_bulb(int value)
 void delay(int seconds) {
     int i, j;
     for (i = 0; i < seconds; i++) {
-        for (j = 0; j < 1000000; j++) {
-            // Adding a loop inside to create some delay as sound may last for some time
-        }
     }
 }
 
