@@ -51,7 +51,7 @@ Access the riscv32-unknown-elf-gcc inside bin folder of riscv32-toolchain folder
 ![block-diagram-single-clap-switch](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/d6584d81-4c49-42c6-830b-5ebf6ba6ca84)
 
 ### Flowchart of the code
-![image](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/c598757c-9a18-489f-bea4-db8220d0bf80)
+![image](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/e1c2f41b-73a4-4a43-a69b-450d4dc9e2fe)
 
 
 ### C code  
