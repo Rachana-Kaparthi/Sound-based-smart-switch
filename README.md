@@ -169,10 +169,11 @@ Compile the c program using RISCV-V GNU Toolchain and dump the assembly code int
 riscv64-unknown-elf-gcc -march=rv32i -mabi=ilp32 -ffreestanding -nostdlib -o out clap_switch.c
 riscv64-unknown-elf-objdump -d -r out > assembly.txt
 ```
-The written assembly.txt file can be seen [here](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/blob/main/assembly.txt).    
-Assemvly code:  
-```
+The written assembly.txt file can be seen [here](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/blob/main/assembly.txt).     
 
+**Assembly code:**  
+
+```
 out:     file format elf32-littleriscv
 
 
@@ -202,7 +203,7 @@ Disassembly of section .text:
    100a4:	fef42623          	sw	a5,-20(s0)
    100a8:	00100513          	li	a0,1
    100ac:	084000ef          	jal	ra,10130 <output_bulb>
-   100b0:	1f400513          	li	a0,500
+   100b0:	00a00513          	li	a0,10
    100b4:	0c0000ef          	jal	ra,10174 <delay>
    100b8:	00000513          	li	a0,0
    100bc:	030000ef          	jal	ra,100ec <output_indicator>
@@ -264,26 +265,18 @@ Disassembly of section .text:
    1017c:	03010413          	addi	s0,sp,48
    10180:	fca42e23          	sw	a0,-36(s0)
    10184:	fe042623          	sw	zero,-20(s0)
-   10188:	0340006f          	j	101bc <delay+0x48>
-   1018c:	fe042423          	sw	zero,-24(s0)
-   10190:	0100006f          	j	101a0 <delay+0x2c>
-   10194:	fe842783          	lw	a5,-24(s0)
-   10198:	00178793          	addi	a5,a5,1
-   1019c:	fef42423          	sw	a5,-24(s0)
-   101a0:	fe842703          	lw	a4,-24(s0)
-   101a4:	000f47b7          	lui	a5,0xf4
-   101a8:	23f78793          	addi	a5,a5,575 # f423f <__global_pointer$+0xe2867>
-   101ac:	fee7d4e3          	bge	a5,a4,10194 <delay+0x20>
-   101b0:	fec42783          	lw	a5,-20(s0)
-   101b4:	00178793          	addi	a5,a5,1
-   101b8:	fef42623          	sw	a5,-20(s0)
-   101bc:	fec42703          	lw	a4,-20(s0)
-   101c0:	fdc42783          	lw	a5,-36(s0)
-   101c4:	fcf744e3          	blt	a4,a5,1018c <delay+0x18>
-   101c8:	00000013          	nop
-   101cc:	02c12403          	lw	s0,44(sp)
-   101d0:	03010113          	addi	sp,sp,48
-   101d4:	00008067          	ret
+   10188:	0100006f          	j	10198 <delay+0x24>
+   1018c:	fec42783          	lw	a5,-20(s0)
+   10190:	00178793          	addi	a5,a5,1
+   10194:	fef42623          	sw	a5,-20(s0)
+   10198:	fec42703          	lw	a4,-20(s0)
+   1019c:	fdc42783          	lw	a5,-36(s0)
+   101a0:	fef746e3          	blt	a4,a5,1018c <delay+0x18>
+   101a4:	00000013          	nop
+   101a8:	02c12403          	lw	s0,44(sp)
+   101ac:	03010113          	addi	sp,sp,48
+   101b0:	00008067          	ret
+
 ```
 
 
