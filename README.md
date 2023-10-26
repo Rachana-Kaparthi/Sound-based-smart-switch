@@ -490,7 +490,27 @@ iverilog -o test processor.v testbench.v
 ./test
 gtkwave waveform.vcd
 ```
-![verilog_simulation](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/a2645dd8-4b2f-481c-a36b-082e07c259fe)  
+![verilog_simulation](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/a2645dd8-4b2f-481c-a36b-082e07c259fe)   
+
+Case 1: Input is 1 for the 1st time i.e. sound is heard for the first time  
+![functional_simulation1](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/766f5fe3-3a85-4cd2-a63b-0f6e70cbf28d)  
+
+
+Case 2: Input is 0 i.e. sound is elapsed  
+![functional_simulation2](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/68257b44-0a1e-4cfc-88f0-32373d7084c5)  
+
+
+Case 3: Input is 1 for the second time i.e. sound is heard for the second time  
+![functional_simulation3](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/334d1780-705a-4f3c-bda8-7e9917141773)  
+
+
+Case 4: Input is 0 i.e. sound is elapsed  
+![functional_simulation4](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/87b7dbd2-3f5c-4148-abd9-a6c93aaf3400)  
+
+
+
+
+
 
 
 
