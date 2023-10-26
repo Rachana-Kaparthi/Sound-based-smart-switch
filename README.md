@@ -8,7 +8,9 @@
   - [Flowchart](#flowchart)
   - [C code](#c-code)
   - [Assembly code conversion](#assembly-code-conversion)
-    - [Unique instructions in assembly code](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/edit/main/README.md#unique-instructions-in-assembly-code)
+    - [Unique instructions in assembly code](#unique-instructions-in-assembly-code)
+  - [C code for debugging using Spike](#c-code-for-debugging-using-spike)
+  - [Functional Simulations](#functional-simulation)  
 
 ## RISCV GNU tool chain
 
@@ -308,7 +310,8 @@ j
 bne
 ```
 
-#### C code for Spike debug  
+### C code for debugging using Spike  
+
 ```
 #include<stdio.h>
 
