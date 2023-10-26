@@ -507,7 +507,12 @@ Previously bulb value is 1 and it continued to stay in its previous state as lon
 
 Case 3: Input is 1 for the second time i.e. sound is heard for the second time  
 Expectation - Since the bulb is on previously, it should be turned off as it hears the sound for the second time.  
+![functional_simulation5](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/356cfc2f-eeed-4119-af32-593d82d78183)  
+
+
+Zooming into the above picture to see a dip in the input :  
 ![functional_simulation3](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/334d1780-705a-4f3c-bda8-7e9917141773)  
+
 
 
 Case 4: Input is 0 i.e. sound is elapsed  
