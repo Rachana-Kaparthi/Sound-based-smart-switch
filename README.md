@@ -475,11 +475,25 @@ riscv64-unknown-elf-gcc -march=rv64i -mabi=lp64 -ffreestanding -o out single_cla
 spike pk out
 ```
 
-**output in the terminal**  
-![spike_debug](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/8c9f70eb-500a-42e6-8072-8c05ef5052a4)  
+**Output in the terminal**  
+![spike_debug](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/8c9f70eb-500a-42e6-8072-8c05ef5052a4)    
 
 Intially when sensor input is 1, indicator value and bulb values are set to 1 and after a finite delay indicator value is set to 0.
-Next time when sensor input is 1, indicator value is initially set to 1, bulb value is set to 0(as previous value of bulb is 1) and after a finite delay indicator value is set to 0.
+Next time when sensor input is 1, indicator value is initially set to 1, bulb value is set to 0(as previous value of bulb is 1) and after a finite delay indicator value is set to 0.  
+
+### Functional Simulation    
+After debugging the C code using Spike, the C code is converted into an optimised RTL logic which consists of your code related specific instruction set, here it is [processor.v](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/blob/main/processor.v) and functionality simulation is done using this [testbench](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/blob/main/testbench.v).  
+
+Command to run Verilog files and view them in gtkwave:  
+```
+iverilog -o test processor.v testbench.v
+./test
+gtkwave waveform.vcd
+```
+![verilog_simulation](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/a2645dd8-4b2f-481c-a36b-082e07c259fe)  
+
+
+
 
 
 
