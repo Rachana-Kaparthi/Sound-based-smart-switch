@@ -504,13 +504,14 @@ When Input becomes 1, first indicator value changes to 1 indicating the user tha
 Expectation - Bulb should continue to retain its previous stage as long as sound is not heard.  
 
 ![functional_simulation2](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/68257b44-0a1e-4cfc-88f0-32373d7084c5)  
-Observations:  
+Observation:  
 Previously bulb value was 1 and it continued to stay in its previous state as long as input is zero i.e. sound is not heard.
 
 **Case 3:** Input is 1 for the second time i.e. sound is heard for the second time  
 Expectation - Since the bulb is on previously, it should be turned off as it hears the sound for the second time.  
 
 ![functional_simulation5](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/356cfc2f-eeed-4119-af32-593d82d78183) 
+Observations:  
 Soon after the input is 1, indicator becomes 1 and bulb value is 0 as it was 1 in its previous stage and the indicator becomes 0 after a delay.
 
 Zooming into the above picture to see a dip in the input :   
@@ -523,6 +524,7 @@ Input is brought down to 0 for a very short time and then made high intentionall
 Expectation - Since there is no sound heard, bulb should continue to stay in its previous state until it hears sound again.  
 
 ![functional_simulation4](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/87b7dbd2-3f5c-4148-abd9-a6c93aaf3400)   
+Observation:  
 In this case,input is finally 0 and bulb value continues to be high till the end.
 
 In this way, all the required cases are tested and verified in functional simulation using Gtkwave and processor is working as expected in all the cases.  
