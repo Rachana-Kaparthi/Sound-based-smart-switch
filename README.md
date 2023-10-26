@@ -484,7 +484,7 @@ Next time when sensor input is 1, indicator value is initially set to 1, bulb va
 ### Functional Simulation    
 After debugging the C code using Spike, the C code is converted into an optimised RTL logic which consists of your code related specific instruction set, here it is [processor.v](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/blob/main/processor.v) and functionality simulation is done using this [testbench](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/blob/main/testbench.v).  
 
-Command to run Verilog files and view them in gtkwave:  
+Commands to run Verilog files and view them in gtkwave:  
 ```
 iverilog -o test processor.v testbench.v
 ./test
@@ -492,32 +492,41 @@ gtkwave waveform.vcd
 ```
 ![verilog_simulation](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/a2645dd8-4b2f-481c-a36b-082e07c259fe)   
 
-Case 1: Input is 1 for the 1st time i.e. sound is heard for the first time  
-Expectation - As soon as sound is heard for the first time, bulb should be turned on.
+**Case 1:** Input is 1 for the 1st time i.e. sound is heard for the first time.  
+Expectation - As soon as sound is heard for the first time, bulb should be turned on.  
+
 ![functional_simulation1](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/766f5fe3-3a85-4cd2-a63b-0f6e70cbf28d)  
 Observations:  
 Initially output value is set to 0, so as long as there is no input output continues to be 0.  
 When Input becomes 1, first indicator value changes to 1 indicating the user that processor does not sense the input until the indicator goes low so that user knows when can he give his second clap to turn the bulb off, then bulb value becomes 1 as its previous state is 0. Now processor waits for certain amount of time before reading the input again and as soon as the wait is over, indicator goes low indicating the user processor is sensing the sound again.
 
-Case 2: Input is 0 i.e. sound is elapsed  
-Expectation - Bulb should continue to retain its previous stage as long as sound is not heard  
+**Case 2:** Input is 0 i.e. sound is elapsed  
+Expectation - Bulb should continue to retain its previous stage as long as sound is not heard.  
+
 ![functional_simulation2](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/68257b44-0a1e-4cfc-88f0-32373d7084c5)  
 Observations:  
-Previously bulb value is 1 and it continued to stay in its previous state as long as input is zero i.e. sound is not heard.
+Previously bulb value was 1 and it continued to stay in its previous state as long as input is zero i.e. sound is not heard.
 
-Case 3: Input is 1 for the second time i.e. sound is heard for the second time  
+**Case 3:** Input is 1 for the second time i.e. sound is heard for the second time  
 Expectation - Since the bulb is on previously, it should be turned off as it hears the sound for the second time.  
-![functional_simulation5](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/356cfc2f-eeed-4119-af32-593d82d78183)  
 
+![functional_simulation5](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/356cfc2f-eeed-4119-af32-593d82d78183) 
+Soon after the input is 1, indicator becomes 1 and bulb value is 0 as it was 1 in its previous stage and the indicator becomes 0 after a delay.
 
-Zooming into the above picture to see a dip in the input :  
+Zooming into the above picture to see a dip in the input :   
+
 ![functional_simulation3](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/334d1780-705a-4f3c-bda8-7e9917141773)  
+Input is brought down to 0 for a very short time and then made high intentionally in this case to verify if the processor is reading the data before the specified delay. But it can be seen that output is constant irrespective of the input before the indicator goes low.
 
 
+**Case 4:** Input is 0 i.e. sound is elapsed  
+Expectation - Since there is no sound heard, bulb should continue to stay in its previous state until it hears sound again.  
 
-Case 4: Input is 0 i.e. sound is elapsed  
-Expectation - Since there is no sound heard, bulb should continue to stay in its previous state until it hears sound again.
-![functional_simulation4](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/87b7dbd2-3f5c-4148-abd9-a6c93aaf3400)  
+![functional_simulation4](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/87b7dbd2-3f5c-4148-abd9-a6c93aaf3400)   
+In this case,input is finally 0 and bulb value continues to be high till the end.
+
+In this way, all the required cases are tested and verified in functional simulation using Gtkwave and processor is working as expected in all the cases.  
+
 
 
 
