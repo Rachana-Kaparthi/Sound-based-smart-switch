@@ -289,7 +289,7 @@ To get the number of instructions, run the python script file instruction_counte
 Suppose your assembly code contains instructions like addi, lw, sw, and so on. Running the instruction_counter.py on this assembly.txt would yield: 
 
 ```
-Number of different instructions: 16
+Number of different instructions: 15
 List of unique instructions:
 
 or
@@ -307,7 +307,6 @@ nop
 blt
 slli
 j
-bne
 ```
 
 ### C code for debugging using Spike  
