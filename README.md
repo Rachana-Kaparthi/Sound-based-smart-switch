@@ -67,84 +67,98 @@ x30[2] - output to switch
 
 Code snippet of Clap switch is shown below:  
 ```
-void output_indicator(int value);
-void output_bulb(int value);
-int sensor_data();
-void delay(int seconds);
 
 int main()
 {
     int bulb = 0;
     while (1)
     {
-        // sensor_input = digital_read(0);
-        int sensor_input = sensor_data();
-    
-        if (sensor_input)
+        
+        unsigned int mask=0xFFFFFFFE;
+        int data;
+        // Read sensor data into x30
+        asm volatile(
+                "andi %0, x30, 0x0001\n\t"
+                : "=r"(data)
+                :
+                :
+            );
+        
+       // printf("Input_data is %d\n",data);
+        int sensor_input = data;
+       
+        if (sensor_input == 1)
         {
-            //digitalWrite(indicator, HIGH);
-            output_indicator(1); // sound is not detected when this led is high
-            if(bulb)
+
+            mask = 0xFFFFFFFD; // output to x30[1]
+            int value1 = 2;
+            asm volatile(
+                "and x30,x30, %1\n\t"
+                "or x30,x30, %0\n\t"
+                :
+                :"r"(value1),"r"(mask)
+                :"x30" //clobber list,indicating that x30 is modified
+            );
+
+            
+            if(bulb == 1)
             {
                 bulb = 0;
-                output_bulb(0);//digitalWrite(bulb, LOW);
+
+                mask = 0xFFFFFFFB;
+                int value2 = 0;
+                asm volatile(
+                    "and x30,x30, %1\n\t"
+                    "or x30,x30, %0\n\t"
+                    :
+                    :"r"(value2),"r"(mask)
+                    :"x30"//clobber list,indicating that x30 is modified
+                );
             }
             else
             {
                 bulb = 1;
-                output_bulb(1);//digitalWrite(bulb, HIGH);
+               
+
+                mask = 0xFFFFFFFB;
+                int value2 = 4;
+                asm volatile(
+                    "and x30,x30, %1\n\t"
+                    "or x30,x30, %0\n\t"
+                    :
+                    :"r"(value2),"r"(mask)
+                    :"x30"//clobber list,indicating that x30 is modified
+                );
+
+
             }
-            delay(10);// waiting for almost 1 sec before sensing the input so that the present sound subsides
-            output_indicator(0); // sound is only detected when this led goes low
-            //digitalWrite(indicator, LOW);
+            // delay(500);// waiting for almost 1 sec before sensing the input so that the present sound subsides
+            int i,j;
+            for (i = 0; i < 10; i++) {
+                 for (j = 0; j < 10; j++) {
+                // Adding a loop inside to create some delay as sound may last for some time
+                }
+
+            }
+           
+
+            mask = 0xFFFFFFFD; // output to x30[1]
+            value1 = 0;
+            asm volatile(
+                "and x30,x30, %1\n\t"
+                "or x30,x30, %0\n\t"
+                :
+                :"r"(value1),"r"(mask)
+                :"x30" //clobber list,indicating that x30 is modified
+            );
+
         }
+       
     }
 
     return (0);
 }
 
-int sensor_data()
-{
-    int data;
-    // Read sensor data into x30
-    asm volatile(
-            "and %0, x30, 1"
-            : "=r"(data)
-            :
-            :
-        );
-    return data;
-}
-void output_indicator(int value)
-{
-    unsigned int mask = 0xFFFFFFFD; // output to x30[1]
-    int value1 = value*2;
-    asm volatile(
-        "and x30,x30, %1\n\t"
-        "or x30,x30, %0\n\t"
-        :
-        :"r"(value1),"r"(mask)
-        :"x30" //clobber list,indicating that x30 is modified
-    );
-}
-void output_bulb(int value)
-{
-    unsigned int mask = 0xFFFFFFFB;
-    int value1 = value*4;
-    asm volatile(
-        "and x30,x30, %1\n\t"
-        "or x30,x30, %0\n\t"
-        :
-        :"r"(value1),"r"(mask)
-        :"x30" //clobber list,indicating that x30 is modified
-    );
-}
-
-void delay(int seconds) {
-    int i;
-    for (i = 0; i < seconds; i++) {
-    }
-}
 
 ```
 
@@ -168,116 +182,85 @@ Compile the c program using RISCV-V GNU Toolchain and dump the assembly code int
 riscv64-unknown-elf-gcc -march=rv32i -mabi=ilp32 -ffreestanding -nostdlib -o out clap_switch.c
 riscv64-unknown-elf-objdump -d -r out > assembly.txt
 ```
-The written assembly.txt file can be seen [here](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/blob/main/assembly.txt).     
 
 **Assembly code:**  
 
 ```
-
-output:     file format elf32-littleriscv
+out32:     file format elf32-littleriscv
 
 
 Disassembly of section .text:
 
 00010054 <main>:
-   10054:	fe010113          	addi	sp,sp,-32
-   10058:	00112e23          	sw	ra,28(sp)
-   1005c:	00812c23          	sw	s0,24(sp)
-   10060:	02010413          	addi	s0,sp,32
-   10064:	fe042623          	sw	zero,-20(s0)
-   10068:	054000ef          	jal	ra,100bc <sensor_data>
-   1006c:	fea42423          	sw	a0,-24(s0)
-   10070:	fe842783          	lw	a5,-24(s0)
-   10074:	fe078ae3          	beqz	a5,10068 <main+0x14>
-   10078:	00100513          	li	a0,1
-   1007c:	068000ef          	jal	ra,100e4 <output_indicator>
-   10080:	fec42783          	lw	a5,-20(s0)
-   10084:	00078a63          	beqz	a5,10098 <main+0x44>
-   10088:	fe042623          	sw	zero,-20(s0)
-   1008c:	00000513          	li	a0,0
-   10090:	098000ef          	jal	ra,10128 <output_bulb>
-   10094:	0140006f          	j	100a8 <main+0x54>
-   10098:	00100793          	li	a5,1
-   1009c:	fef42623          	sw	a5,-20(s0)
-   100a0:	00100513          	li	a0,1
-   100a4:	084000ef          	jal	ra,10128 <output_bulb>
-   100a8:	00a00513          	li	a0,10
-   100ac:	0c0000ef          	jal	ra,1016c <delay>
-   100b0:	00000513          	li	a0,0
-   100b4:	030000ef          	jal	ra,100e4 <output_indicator>
-   100b8:	fb1ff06f          	j	10068 <main+0x14>
-
-000100bc <sensor_data>:
-   100bc:	fe010113          	addi	sp,sp,-32
-   100c0:	00812e23          	sw	s0,28(sp)
-   100c4:	02010413          	addi	s0,sp,32
-   100c8:	001f7793          	andi	a5,t5,1
-   100cc:	fef42623          	sw	a5,-20(s0)
-   100d0:	fec42783          	lw	a5,-20(s0)
-   100d4:	00078513          	mv	a0,a5
-   100d8:	01c12403          	lw	s0,28(sp)
-   100dc:	02010113          	addi	sp,sp,32
-   100e0:	00008067          	ret
-
-000100e4 <output_indicator>:
-   100e4:	fd010113          	addi	sp,sp,-48
-   100e8:	02812623          	sw	s0,44(sp)
-   100ec:	03010413          	addi	s0,sp,48
-   100f0:	fca42e23          	sw	a0,-36(s0)
-   100f4:	ffd00793          	li	a5,-3
-   100f8:	fef42623          	sw	a5,-20(s0)
-   100fc:	fdc42783          	lw	a5,-36(s0)
-   10100:	00179793          	slli	a5,a5,0x1
-   10104:	fef42423          	sw	a5,-24(s0)
-   10108:	fe842783          	lw	a5,-24(s0)
-   1010c:	fec42703          	lw	a4,-20(s0)
-   10110:	00ef7f33          	and	t5,t5,a4
-   10114:	00ff6f33          	or	t5,t5,a5
-   10118:	00000013          	nop
-   1011c:	02c12403          	lw	s0,44(sp)
-   10120:	03010113          	addi	sp,sp,48
-   10124:	00008067          	ret
-
-00010128 <output_bulb>:
-   10128:	fd010113          	addi	sp,sp,-48
-   1012c:	02812623          	sw	s0,44(sp)
-   10130:	03010413          	addi	s0,sp,48
-   10134:	fca42e23          	sw	a0,-36(s0)
-   10138:	ffb00793          	li	a5,-5
-   1013c:	fef42623          	sw	a5,-20(s0)
-   10140:	fdc42783          	lw	a5,-36(s0)
-   10144:	00279793          	slli	a5,a5,0x2
-   10148:	fef42423          	sw	a5,-24(s0)
-   1014c:	fe842783          	lw	a5,-24(s0)
-   10150:	fec42703          	lw	a4,-20(s0)
+   10054:	fc010113          	addi	sp,sp,-64
+   10058:	02812e23          	sw	s0,60(sp)
+   1005c:	04010413          	addi	s0,sp,64
+   10060:	fe042623          	sw	zero,-20(s0)
+   10064:	ffe00793          	li	a5,-2
+   10068:	fef42023          	sw	a5,-32(s0)
+   1006c:	001f7793          	andi	a5,t5,1
+   10070:	fcf42e23          	sw	a5,-36(s0)
+   10074:	fdc42783          	lw	a5,-36(s0)
+   10078:	fcf42c23          	sw	a5,-40(s0)
+   1007c:	fd842703          	lw	a4,-40(s0)
+   10080:	00100793          	li	a5,1
+   10084:	fef710e3          	bne	a4,a5,10064 <main+0x10>
+   10088:	ffd00793          	li	a5,-3
+   1008c:	fef42023          	sw	a5,-32(s0)
+   10090:	00200793          	li	a5,2
+   10094:	fcf42a23          	sw	a5,-44(s0)
+   10098:	fd442783          	lw	a5,-44(s0)
+   1009c:	fe042703          	lw	a4,-32(s0)
+   100a0:	00ef7f33          	and	t5,t5,a4
+   100a4:	00ff6f33          	or	t5,t5,a5
+   100a8:	fec42703          	lw	a4,-20(s0)
+   100ac:	00100793          	li	a5,1
+   100b0:	02f71463          	bne	a4,a5,100d8 <main+0x84>
+   100b4:	fe042623          	sw	zero,-20(s0)
+   100b8:	ffb00793          	li	a5,-5
+   100bc:	fef42023          	sw	a5,-32(s0)
+   100c0:	fc042823          	sw	zero,-48(s0)
+   100c4:	fd042783          	lw	a5,-48(s0)
+   100c8:	fe042703          	lw	a4,-32(s0)
+   100cc:	00ef7f33          	and	t5,t5,a4
+   100d0:	00ff6f33          	or	t5,t5,a5
+   100d4:	02c0006f          	j	10100 <main+0xac>
+   100d8:	00100793          	li	a5,1
+   100dc:	fef42623          	sw	a5,-20(s0)
+   100e0:	ffb00793          	li	a5,-5
+   100e4:	fef42023          	sw	a5,-32(s0)
+   100e8:	00400793          	li	a5,4
+   100ec:	fcf42623          	sw	a5,-52(s0)
+   100f0:	fcc42783          	lw	a5,-52(s0)
+   100f4:	fe042703          	lw	a4,-32(s0)
+   100f8:	00ef7f33          	and	t5,t5,a4
+   100fc:	00ff6f33          	or	t5,t5,a5
+   10100:	fe042423          	sw	zero,-24(s0)
+   10104:	0300006f          	j	10134 <main+0xe0>
+   10108:	fe042223          	sw	zero,-28(s0)
+   1010c:	0100006f          	j	1011c <main+0xc8>
+   10110:	fe442783          	lw	a5,-28(s0)
+   10114:	00178793          	addi	a5,a5,1
+   10118:	fef42223          	sw	a5,-28(s0)
+   1011c:	fe442703          	lw	a4,-28(s0)
+   10120:	00900793          	li	a5,9
+   10124:	fee7d6e3          	bge	a5,a4,10110 <main+0xbc>
+   10128:	fe842783          	lw	a5,-24(s0)
+   1012c:	00178793          	addi	a5,a5,1
+   10130:	fef42423          	sw	a5,-24(s0)
+   10134:	fe842703          	lw	a4,-24(s0)
+   10138:	00900793          	li	a5,9
+   1013c:	fce7d6e3          	bge	a5,a4,10108 <main+0xb4>
+   10140:	ffd00793          	li	a5,-3
+   10144:	fef42023          	sw	a5,-32(s0)
+   10148:	fc042a23          	sw	zero,-44(s0)
+   1014c:	fd442783          	lw	a5,-44(s0)
+   10150:	fe042703          	lw	a4,-32(s0)
    10154:	00ef7f33          	and	t5,t5,a4
    10158:	00ff6f33          	or	t5,t5,a5
-   1015c:	00000013          	nop
-   10160:	02c12403          	lw	s0,44(sp)
-   10164:	03010113          	addi	sp,sp,48
-   10168:	00008067          	ret
-
-0001016c <delay>:
-   1016c:	fd010113          	addi	sp,sp,-48
-   10170:	02812623          	sw	s0,44(sp)
-   10174:	03010413          	addi	s0,sp,48
-   10178:	fca42e23          	sw	a0,-36(s0)
-   1017c:	fe042623          	sw	zero,-20(s0)
-   10180:	0100006f          	j	10190 <delay+0x24>
-   10184:	fec42783          	lw	a5,-20(s0)
-   10188:	00178793          	addi	a5,a5,1
-   1018c:	fef42623          	sw	a5,-20(s0)
-   10190:	fec42703          	lw	a4,-20(s0)
-   10194:	fdc42783          	lw	a5,-36(s0)
-   10198:	fef746e3          	blt	a4,a5,10184 <delay+0x18>
-   1019c:	00000013          	nop
-   101a0:	02c12403          	lw	s0,44(sp)
-   101a4:	03010113          	addi	sp,sp,48
-   101a8:	00008067          	ret
+   1015c:	f09ff06f          	j	10064 <main+0x10>
 
 ```
-
-
 
 **Note** 
 In the above c program, digital read and digital write functions are commented to show how the inputs and outputs are given. For now, we need only the logic which controls the clap_switch.  
@@ -308,9 +291,6 @@ andi
 ```
 #include<stdio.h>
 
-void output_indicator(int value);
-void output_bulb(int value);
-int sensor_data(int value);
 void delay(int seconds);
 
 int main()
@@ -322,35 +302,179 @@ int main()
     int i = 0;
     int j = 0;
     int sensor_inp= 0;
+    int register_value = 0;
 
     //debugging
     while (j< 30)
     {
         if(i == 5) sensor_inp = 1;
         // sensor_input = digital_read(0);
-        int sensor_input = sensor_data(sensor_inp);
-        //register_value();
+        //-------------------------------------------------------
+        //debugging
+        printf("Entering sensor_read\n");
+        //debugging
+
+        //debugging
+        unsigned int mask=0xFFFFFFFE;
+        
+        asm volatile(
+            "and x30,x30,%0\n\t"
+            "or x30, x30, %1\n\t"
+                :
+                :"r"(mask),"r"(sensor_inp)
+                :"x30"
+                );
+        //debugging  
+
+        int data;
+        // Read sensor data into x30
+        asm volatile(
+                "andi %0, x30, 0x0001\n\t"
+                : "=r"(data)
+                :
+                :
+            );
+        
+        printf("Input_data is %d\n",data);
+        int sensor_input = data;
+        //--------------------------------------------------------
     
-        if (sensor_input)
+        if (sensor_input == 1)
         {
             //digitalWrite(indicator, HIGH);
-            output_indicator(1); // sound is not detected when this led is high
+            //output_indicator(1); // sound is not detected when this led is high
+            //-----------------------------------------------------------------
+
+            printf("Entering output_indicator\n");
+
+            mask = 0xFFFFFFFD; // output to x30[1]
+            int value1 = 2;
+            asm volatile(
+                "and x30,x30, %1\n\t"
+                "or x30,x30, %0\n\t"
+                :
+                :"r"(value1),"r"(mask)
+                :"x30" //clobber list,indicating that x30 is modified
+            );
+
+            //debugging
+            // Read sensor data into x30
+            asm volatile(
+                    "andi %0, x30, 0x0002"
+                    : "=r"(data)
+                );
+            if(data == 2) indicator = 1;
+            if(data == 0) indicator = 0;
+        
+            printf("Setting Indicator value to %d\n",indicator);
+
+            //-----------------------------------------------------------------
             
-            if(bulb)
+            if(bulb == 1)
             {
                 bulb = 0;
-                output_bulb(0);//digitalWrite(bulb, LOW);
-               
+                // output_bulb(0);//digitalWrite(bulb, LOW);
+                //-----------------------------------------------------------
+
+                printf("Entering output_bulb\n");
+
+                mask = 0xFFFFFFFB;
+                int value2 = 0;
+                asm volatile(
+                    "and x30,x30, %1\n\t"
+                    "or x30,x30, %0\n\t"
+                    :
+                    :"r"(value2),"r"(mask)
+                    :"x30"//clobber list,indicating that x30 is modified
+                );
+
+                //debugging
+                int data;
+                // int bulb;
+                // Read sensor data into x30
+                asm volatile(
+                        "andi %0, x30, 0x0004"
+                        : "=r"(data)
+                        :
+                        :
+                    );
+                if(data == 4) bulb = 1;
+                if(data == 0) bulb = 0;
+
+                printf("Setting bulb value to %d\n",bulb);
+
+                //------------------------------------------------------------
             }
             else
             {
                 bulb = 1;
-                output_bulb(1);//digitalWrite(bulb, HIGH);
-              
+                // output_bulb(1);//digitalWrite(bulb, HIGH);
+                //-----------------------------------------------------------
+
+                printf("Entering output_bulb\n");
+
+                mask = 0xFFFFFFFB;
+                int value2 = 4;
+                asm volatile(
+                    "and x30,x30, %1\n\t"
+                    "or x30,x30, %0\n\t"
+                    :
+                    :"r"(value2),"r"(mask)
+                    :"x30"//clobber list,indicating that x30 is modified
+                );
+
+                //debugging
+                int data;
+                int bulb;
+                // Read sensor data into x30
+                asm volatile(
+                        "andi %0, x30, 0x0004"
+                        : "=r"(data)
+                        :
+                        :
+                    );
+                if(data == 4) bulb = 1;
+                if(data == 0) bulb = 0;
+
+                printf("Setting bulb value to %d\n",bulb);
+
+                //------------------------------------------------------------
             }
-            delay(200);// waiting for almost 1 sec before sensing the input so that the present sound subsides
-            output_indicator(0); // sound is only detected when this led goes low
-            //register_value();
+            // delay(500);// waiting for almost 1 sec before sensing the input so that the present sound subsides
+            int i,j;
+            for (i = 0; i < 10; i++) {
+                 for (j = 0; j < 10; j++) {
+                // Adding a loop inside to create some delay as sound may last for some time
+                }
+
+            }
+            // output_indicator(0); // sound is only detected when this led goes low
+            //-----------------------------------------------------------------
+
+            printf("Entering output_indicator\n");
+
+            mask = 0xFFFFFFFD; // output to x30[1]
+            value1 = 0;
+            asm volatile(
+                "and x30,x30, %1\n\t"
+                "or x30,x30, %0\n\t"
+                :
+                :"r"(value1),"r"(mask)
+                :"x30" //clobber list,indicating that x30 is modified
+            );
+
+            //debugging
+            // Read sensor data into x30
+            asm volatile(
+                    "andi %0, x30, 0x0002"
+                    : "=r"(data)
+                );
+            if(data == 2) indicator = 1;
+            if(data == 0) indicator = 0;
+        
+            printf("Setting Indicator value to %d\n",indicator);
+
+            //-----------------------------------------------------------------
             //digitalWrite(indicator, LOW);
         }
         //debugging
@@ -362,107 +486,6 @@ int main()
 
     return (0);
 }
-
-int sensor_data(int value)
-{
-    //debugging
-    printf("Entering sensor_read\n");
-    //debugging
-
-    //debugging
-	int mask=0xFFFFFFFE;
-	
-	asm volatile(
-		"and x30,x30,%0\n\t"
-    "or x30, x30, %1\n\t"
-	    	:
-	    	:"r"(mask),"r"(value)
-	    	:"x30"
-	    	);
-	//debugging  
-
-    int data;
-    // Read sensor data into x30
-    asm volatile(
-            "andi %0, x30, 0x0001\n\t"
-            : "=r"(data)
-            :
-            :
-        );
-    
-    printf("Input_data is %d\n",data);
-    return data;
-}
-void output_indicator(int value)
-{
-    printf("Entering output_indicator\n");
-
-    unsigned int mask = 0xFFFFFFFD; // output to x30[1]
-    int value1 = value*2;
-    asm volatile(
-        "and x30,x30, %1\n\t"
-        "or x30,x30, %0\n\t"
-        :
-        :"r"(value1),"r"(mask)
-        :"x30" //clobber list,indicating that x30 is modified
-    );
-
-    //debugging
-     int data;
-     int indicator;
-    // Read sensor data into x30
-    asm volatile(
-            "andi %0, x30, 0x0002"
-            : "=r"(data)
-        );
-    if(data == 2) indicator = 1;
-    if(data == 0) indicator = 0;
-    //debugging   
-   
-    printf("Setting Indicator value to %d\n",indicator);
-    
-}
-void output_bulb(int value)
-{
-    printf("Entering output_bulb\n");
-
-    unsigned int mask = 0xFFFFFFFB;
-    int value1 = value*4;
-    asm volatile(
-        "and x30,x30, %1\n\t"
-        "or x30,x30, %0\n\t"
-        :
-        :"r"(value1),"r"(mask)
-        :"x30"//clobber list,indicating that x30 is modified
-    );
-
-    //debugging
-     int data;
-     int bulb;
-    // Read sensor data into x30
-    asm volatile(
-            "andi %0, x30, 0x0004"
-            : "=r"(data)
-            :
-            :
-        );
-    if(data == 4) bulb = 1;
-    if(data == 0) bulb = 0;
-
-    printf("Setting bulb value to %d\n",bulb);
-   
-}
-
-void delay(int seconds) {
-    printf("Entering delay to wait for some time before turning off the indicator\n");
-    int i, j;
-    for (i = 0; i < seconds; i++) {
-        for (j = 0; j < 1000000; j++) {
-            // Adding a loop inside to create some delay as sound may last for some time
-        }
-    }
-}
-
 
 ```
 Commands for debugging:
