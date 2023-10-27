@@ -548,6 +548,21 @@ In this case,input is finally 0 and bulb value continues to be high till the end
 
 In this way, all the required cases are tested and verified in functional simulation using Gtkwave and processor is working as expected in all the cases.  
 
+## Acknowledgement   
+
+- Kunal Ghosh, VSD Corp. Pvt. Ltd.
+- Mayank, TA, IIIT B
+- Bhargav, Colleague, IIIT B
+- chatgpt
+
+## References
+1. https://openlane.readthedocs.io/en/latest/
+2. https://luplab.gitlab.io/rvcodecjs/
+3. https://github.com/bhargav-vlsi/RISCV-Display-controller
+4. https://github.com/SakethGajawada/RISCV_GNU
+5. https://github.com/riscv-collab/riscv-gnu-toolchain
+6. https://github.com/riscv-software-src/riscv-isa-sim
+
 
 
 
