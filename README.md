@@ -440,7 +440,7 @@ int main()
 
                 //------------------------------------------------------------
             }
-            // delay(500);// waiting for almost 1 sec before sensing the input so that the present sound subsides
+            
             int i,j;
             for (i = 0; i < 10; i++) {
                  for (j = 0; j < 10; j++) {
