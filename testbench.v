@@ -138,70 +138,7 @@ initial begin
   
 
     uart_rx_en = 1'b1;
-    /*@(posedge slow_clk);write_instruction(32'h00000000); 
-    @(posedge slow_clk);write_instruction(32'h00000000); 
-    @(posedge slow_clk);write_instruction(32'hfd010113); 
-    @(posedge slow_clk);write_instruction(32'h02812623); 
-    @(posedge slow_clk);write_instruction(32'h03010413); 
-    @(posedge slow_clk);write_instruction(32'hfe042623); 
-    @(posedge slow_clk);write_instruction(32'hffe00793); 
-    @(posedge slow_clk);write_instruction(32'hfef42223); 
-    @(posedge slow_clk);write_instruction(32'h001f7793); 
-    @(posedge slow_clk);write_instruction(32'hfef42023); 
-    @(posedge slow_clk);write_instruction(32'hfe042783); 
-    @(posedge slow_clk);write_instruction(32'hfcf42e23); 
-    @(posedge slow_clk);write_instruction(32'hfdc42703); 
-    @(posedge slow_clk);write_instruction(32'h00100793); 
-    @(posedge slow_clk);write_instruction(32'hfef710e3); 
-    @(posedge slow_clk);write_instruction(32'hffd00793); 
-    @(posedge slow_clk);write_instruction(32'hfef42223); 
-    @(posedge slow_clk);write_instruction(32'h00200793); 
-    @(posedge slow_clk);write_instruction(32'hfcf42c23); 
-    @(posedge slow_clk);write_instruction(32'hfd842783); 
-    @(posedge slow_clk);write_instruction(32'hfe442703); 
-    @(posedge slow_clk);write_instruction(32'h00ef7f33); 
-    @(posedge slow_clk);write_instruction(32'h00ff6f33); 
-    @(posedge slow_clk);write_instruction(32'hfec42703); 
-    @(posedge slow_clk);write_instruction(32'h00100793); 
-    @(posedge slow_clk);write_instruction(32'h02f71463); 
-    @(posedge slow_clk);write_instruction(32'hfe042623); 
-    @(posedge slow_clk);write_instruction(32'hffb00793); 
-    @(posedge slow_clk);write_instruction(32'hfef42223); 
-    @(posedge slow_clk);write_instruction(32'hfc042a23); 
-    @(posedge slow_clk);write_instruction(32'hfd442783); 
-    @(posedge slow_clk);write_instruction(32'hfe442703); 
-    @(posedge slow_clk);write_instruction(32'h00ef7f33); 
-    @(posedge slow_clk);write_instruction(32'h00ff6f33); 
-    @(posedge slow_clk);write_instruction(32'h02c0006f); 
-    @(posedge slow_clk);write_instruction(32'h00100793); 
-    @(posedge slow_clk);write_instruction(32'hfef42623); 
-    @(posedge slow_clk);write_instruction(32'hffb00793); 
-    @(posedge slow_clk);write_instruction(32'hfef42223); 
-    @(posedge slow_clk);write_instruction(32'h00400793); 
-    @(posedge slow_clk);write_instruction(32'hfcf42823); 
-    @(posedge slow_clk);write_instruction(32'hfd042783); 
-    @(posedge slow_clk);write_instruction(32'hfe442703); 
-    @(posedge slow_clk);write_instruction(32'h00ef7f33); 
-    @(posedge slow_clk);write_instruction(32'h00ff6f33); 
-    @(posedge slow_clk);write_instruction(32'hfe042423); 
-    @(posedge slow_clk);write_instruction(32'h0100006f); 
-    @(posedge slow_clk);write_instruction(32'hfe842783); 
-    @(posedge slow_clk);write_instruction(32'h00178793); 
-    @(posedge slow_clk);write_instruction(32'hfef42423); 
-    @(posedge slow_clk);write_instruction(32'hfe842703); 
-    @(posedge slow_clk);write_instruction(32'h00900793); 
-    @(posedge slow_clk);write_instruction(32'hfee7d6e3); 
-    @(posedge slow_clk);write_instruction(32'hffd00793); 
-    @(posedge slow_clk);write_instruction(32'hfef42223); 
-    @(posedge slow_clk);write_instruction(32'hfc042c23); 
-    @(posedge slow_clk);write_instruction(32'hfd842783); 
-    @(posedge slow_clk);write_instruction(32'hfe442703); 
-    @(posedge slow_clk);write_instruction(32'h00ef7f33); 
-    @(posedge slow_clk);write_instruction(32'h00ff6f33); 
-    @(posedge slow_clk);write_instruction(32'hf29ff06f); 
-    @(posedge slow_clk);write_instruction(32'hffffffff); 
-    @(posedge slow_clk);write_instruction(32'hffffffff); */
-	
+   
 	 input_wires = 1'b1;
 	 #3200
 	 input_wires = 1'b0;
@@ -212,7 +149,7 @@ initial begin
 	 #100
 	 input_wires = 1'b1;
 	 #300
-	  input_wires = 1'b0;
+	 input_wires = 1'b0;
 
 
 
