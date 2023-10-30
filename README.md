@@ -13,6 +13,7 @@
   - [Functional Simulations](#functional-simulation)
   - [GLC Simulations](#gls-simulation)
     - [Netlist-1 - For testing UART functionality](#netlist-1---for-testing-uart-functionality)
+    - [Netlist-2: For performing GLS Simulations bypassing UART](netlist-2-for-performing-gls-simulations-bypassing-uart)
     
 
 ## RISCV GNU tool chain
