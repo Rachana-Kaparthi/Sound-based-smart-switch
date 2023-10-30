@@ -12,6 +12,7 @@
   - [C code for debugging using Spike](#c-code-for-debugging-using-spike)
   - [Functional Simulations](#functional-simulation)
   - [GLC Simulations](#gls-simulation)
+    - [Netlist-1 - For testing UART functionality](#netlist-1---for-testing-uart-functionality)
     
 
 ## RISCV GNU tool chain
@@ -554,9 +555,7 @@ In this way, all the required cases are tested and verified in functional simula
 
 In this section, we will be performing Gate level Simulation by creating two different netlist - one is specific to our ASIC application using UART mechanism for data transfer and second netlist is created for testing by bypassing the UART mechanism.   
 
-Prerequisites before creating the netlist using Yosys:  
-
-**Netlist-1** - For testing UART functionality:  
+#### Netlist-1 - For testing UART functionality:  
 Make sure you have the below files for generating netlist1 -  
 - ``` sky130_fd_sc_hd__tt_025C_1v80_256 ```
 - ``` processor.v ```
