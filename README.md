@@ -723,8 +723,11 @@ dfflibmap -liberty sky130_fd_sc_hd__tt_025C_1v80_256.lib
 abc -liberty sky130_fd_sc_hd__tt_025C_1v80_256.lib
 write_verilog synth_test_processor.v
 ```
-A verilog file gets created in you folder with the name ```synth_test_processor.v```. Now change the name of the module sky130_sram_1kbyte_1rw1r_32x256_8 to sky130_sram_1kbyte_1rw1r_32x256_8_data and sky130_sram_1kbyte_1rw1r_32x256_8 to sky130_sram_1kbyte_1rw1r_32x256_8_inst in the generated synth_test_processor.v file.
-Next make sure you have the definition of sky130_sram_1kbyte_1rw1r_32x256_8_data and sky130_sram_1kbyte_1rw1r_32x256_8_inst in a file in your folder, for this create a file named  ```sky130_sram_1kbyte_1rw1r_32x256_8.v```  with the below contents: 
+A verilog file gets created in you folder with the name ```synth_test_processor.v```. Now change the name of the module sky130_sram_1kbyte_1rw1r_32x256_8 to sky130_sram_1kbyte_1rw1r_32x256_8_data and sky130_sram_1kbyte_1rw1r_32x256_8 to sky130_sram_1kbyte_1rw1r_32x256_8_inst in the generated synth_test_processor.v file.  
+Secondly change the contents of testbench file similar to this file [testbench_bypass.v](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/blob/main/testbench_bypassuart.v)
+Next make sure you have the definition of sky130_sram_1kbyte_1rw1r_32x256_8_data and sky130_sram_1kbyte_1rw1r_32x256_8_inst in a file in your folder, for this create a file named  ```sky130_sram_1kbyte_1rw1r_32x256_8.v```  with the below contents:   
+
+```
 // OpenRAM SRAM model
 // Words: 512
 // Word size: 32
@@ -809,7 +812,7 @@ reg [DATA_WIDTH-1:0]    mem [0:RAM_DEPTH-1];
   initial
     begin
 
-  mem[0] = 32'h00000000;
+        mem[0] = 32'h00000000;
 	mem[1] = 32'h00000000;
 	mem[2] = 32'hfd010113;
 	mem[3] = 32'h02812623;
@@ -1025,13 +1028,16 @@ reg [DATA_WIDTH-1:0]    mem [0:RAM_DEPTH-1];
 
 endmodule
 ```
-Now, run the below iverilog commands in the terminal:  
+Now, run the below iverilog commands in the terminal:
+
 ```
-iverilog -o test testbench.v synth_test_processor.v sky130_sram_1kbyte_1rw1r_32x256_8.v sky130_fd_sc_hd.v primitives.v
+iverilog -o test testbench_bypassuart.v synth_test_processor.v sky130_sram_1kbyte_1rw1r_32x256_8.v sky130_fd_sc_hd.v primitives.v
 ./test
 gtkwave waveform.vcd
 ```
+
 Here is output in the gtkwave :
+
 ![gls_gtkwave](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/86cdb230-73e0-4c9f-ad90-9a54dcfc90d4)
 
 It can be clearly seen that, in this case writing_inst_done is set to 1 from the very beginning of the simulation and output is seen as expected similar to that of the functional simulation.
