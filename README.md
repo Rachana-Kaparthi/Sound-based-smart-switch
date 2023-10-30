@@ -555,14 +555,14 @@ In this way, all the required cases are tested and verified in functional simula
 
 In this section, we will be performing Gate level Simulation by creating two different netlist - one is specific to our ASIC application using UART mechanism for data transfer and second netlist is created for testing by bypassing the UART mechanism.   
 
-#### Netlist-1 - For testing UART functionality:  
+#### Netlist-1: For testing UART functionality:  
 Make sure you have the below files for generating netlist1 -  
 - ``` sky130_fd_sc_hd__tt_025C_1v80_256 ```
 - ``` processor.v ```
 - ``` sky130_fd_sc_hd.v ```
 - ``` primitives.v ```
   
-Before performing Yosys, make sure you comment out below mentioned sram module definations from your processor.v file which was used earlier for functional testing:
+Before performing Yosys, make sure you comment out below mentioned sram module definations from your ```processor.v``` file which was used earlier for functional testing:
 - module sky130_sram_1kbyte_1rw1r_32x256_8_inst
 - module sky130_sram_1kbyte_1rw1r_32x256_8_data
 Also, make sure your writing_inst_done = 0 in the code as shown below
@@ -701,6 +701,29 @@ Below is the output in the gtkwave:
 In this case, writing_inst_done will be 1 after the whole instructions are sent via uart and we can see writing_inst_done was initialliy 0 and becomes 1 after certain time.  
 ID_instruction starts fetching the instructions only after writing_inst_done becomes 1 and output in this case is shown below:  
 ![gls_gtkwave_uart1](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/6effac0c-1eab-4464-940e-6d712506f561)  
+So, this confirms that UART data transfer is working as expected.  
+
+#### Netlist-2: For performing GLS Simulations bypassing UART  
+Though the above method confirms proper output, UART transfers take a lot of time for generating the VCD file. So, here is a quicker way to perform simulation bypassing UART:  
+Make sure you have the below files for generating netlist2 -  
+- ``` sky130_fd_sc_hd__tt_025C_1v80_256 ```
+- ``` processor.v ```
+- ``` sky130_fd_sc_hd.v ```
+- ``` primitives.v ```
+Before performing Yosys, make sure writing_inst_done is set to 1 in ```processor.v``` file.
+![writing_inst_done_1](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/e0ab9674-c614-44f9-add8-680247c7e5c0)
+Now run the below Yosys commands :
+```
+yosys // to invoke yosys in your folder
+read_liberty -lib sky130_fd_sc_hd__tt_025C_1v80_256.lib
+read_verilog processor.v
+synth -top wrapper
+dfflibmap -liberty sky130_fd_sc_hd__tt_025C_1v80_256.lib
+abc -liberty sky130_fd_sc_hd__tt_025C_1v80_256.lib
+write_verilog synth_test_processor.v
+```
+
+
 
 
 
