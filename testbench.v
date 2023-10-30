@@ -109,7 +109,7 @@ endtask
 
 initial 
 begin 
-    $dumpfile("waveform_uart.vcd");
+    $dumpfile("waveform_yosys.vcd");
     $dumpvars(0,tb);
 end 
 
@@ -138,7 +138,7 @@ initial begin
   
 
     uart_rx_en = 1'b1;
-    @(posedge slow_clk);write_instruction(32'h00000000); 
+    /*@(posedge slow_clk);write_instruction(32'h00000000); 
     @(posedge slow_clk);write_instruction(32'h00000000); 
     @(posedge slow_clk);write_instruction(32'hfd010113); 
     @(posedge slow_clk);write_instruction(32'h02812623); 
@@ -200,7 +200,7 @@ initial begin
     @(posedge slow_clk);write_instruction(32'h00ff6f33); 
     @(posedge slow_clk);write_instruction(32'hf29ff06f); 
     @(posedge slow_clk);write_instruction(32'hffffffff); 
-    @(posedge slow_clk);write_instruction(32'hffffffff); 
+    @(posedge slow_clk);write_instruction(32'hffffffff); */
 	
 	 input_wires = 1'b1;
 	 #3200
