@@ -548,6 +548,162 @@ In this case,input is finally 0 and bulb value continues to be high till the end
 
 In this way, all the required cases are tested and verified in functional simulation using Gtkwave and processor is working as expected in all the cases.  
 
+### GLS Simulation  
+
+In this section, we will be performing Gate level Simulation by creating two different netlist - one is specific to our ASIC application using UART mechanism for data transfer and second netlist is created for testing by bypassing the UART mechanism.   
+
+Prerequisites before creating the netlist using Yosys:  
+
+**Netlist-1** - For testing UART functionality:  
+Make sure you have the below files for generating netlist1 -  
+- ``` sky130_fd_sc_hd__tt_025C_1v80_256 ```
+- ``` processor.v ```
+- ``` sky130_fd_sc_hd.v ```
+- ``` primitives.v ```
+Before performing Yosys, make sure you comment out below mentioned sram module definations from your processor.v file which was used earlier for functional testing:
+- module sky130_sram_1kbyte_1rw1r_32x256_8_inst
+- module sky130_sram_1kbyte_1rw1r_32x256_8_data
+Also, make sure your writing_inst_done = 0 in the code as shown below
+![writing_inst_done_0](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/50a29d9a-bb7c-46c5-ac5c-55ff59e47903)
+Now run the below Yosys commands :
+```
+yosys // to invoke yosys in your folder
+read_liberty -lib sky130_fd_sc_hd__tt_025C_1v80_256.lib
+read_verilog processor.v
+synth -top wrapper
+dfflibmap -liberty sky130_fd_sc_hd__tt_025C_1v80_256.lib
+abc -liberty sky130_fd_sc_hd__tt_025C_1v80_256.lib
+write_verilog synth_test_asic.v
+```
+A verilog file gets created in you folder with the name ```synth_test_asic.v```. Now make sure you have the defination of sky130_sram_1kbyte_1rw1r_32x256_8 in a file in your folder, for this create a file named  ```sky130_sram_1kbyte_1rw1r_32x256_8_uart.v```  with the below contents:  
+
+```
+module sky130_sram_1kbyte_1rw1r_32x256_8(
+`ifdef USE_POWER_PINS
+    vccd1,
+    vssd1,
+`endif
+// Port 0: RW
+    clk0,csb0,web0,wmask0,addr0,din0,dout0,
+// Port 1: R
+    clk1,csb1,addr1,dout1
+  );
+
+  parameter NUM_WMASKS = 4 ;
+  parameter DATA_WIDTH = 32 ;
+  parameter ADDR_WIDTH = 8 ;
+  parameter RAM_DEPTH = 1 << ADDR_WIDTH;
+  // FIXME: This delay is arbitrary.
+  parameter DELAY = 0 ;
+  parameter VERBOSE = 0 ; //Set to 0 to only display warnings
+  parameter T_HOLD = 0 ; //Delay to hold dout value after posedge. Value is arbitrary
+
+`ifdef USE_POWER_PINS
+    inout vccd1;
+    inout vssd1;
+`endif
+  input  clk0; // clock
+  input   csb0; // active low chip select
+  input  web0; // active low write control
+  input [NUM_WMASKS-1:0]   wmask0; // write mask
+  input [ADDR_WIDTH-1:0]  addr0;
+  input [DATA_WIDTH-1:0]  din0;
+  output [DATA_WIDTH-1:0] dout0;
+  input  clk1; // clock
+  input   csb1; // active low chip select
+  input [ADDR_WIDTH-1:0]  addr1;
+  output [DATA_WIDTH-1:0] dout1;
+
+  reg  csb0_reg;
+  reg  web0_reg;
+  reg [NUM_WMASKS-1:0]   wmask0_reg;
+  reg [ADDR_WIDTH-1:0]  addr0_reg;
+  reg [DATA_WIDTH-1:0]  din0_reg;
+  reg [DATA_WIDTH-1:0]  dout0;
+
+  // All inputs are registers
+  always @(posedge clk0)
+  begin
+    csb0_reg = csb0;
+    web0_reg = web0;
+    wmask0_reg = wmask0;
+    addr0_reg = addr0;
+    din0_reg = din0;
+    //#(T_HOLD) dout0 = 32'bx;
+    if ( !csb0_reg && web0_reg && VERBOSE ) 
+      $display($time," Reading %m addr0=%b dout0=%b",addr0_reg,mem[addr0_reg]);
+    if ( !csb0_reg && !web0_reg && VERBOSE )
+      $display($time," Writing %m addr0=%b din0=%b wmask0=%b",addr0_reg,din0_reg,wmask0_reg);
+  end
+
+  reg  csb1_reg;
+  reg [ADDR_WIDTH-1:0]  addr1_reg;
+  reg [DATA_WIDTH-1:0]  dout1;
+
+  // All inputs are registers
+  always @(posedge clk1)
+  begin
+    csb1_reg = csb1;
+    addr1_reg = addr1;
+    if (!csb0 && !web0 && !csb1 && (addr0 == addr1))
+         $display($time," WARNING: Writing and reading addr0=%b and addr1=%b simultaneously!",addr0,addr1);
+    #(T_HOLD) dout1 = 32'bx;
+    if ( !csb1_reg && VERBOSE ) 
+      $display($time," Reading %m addr1=%b dout1=%b",addr1_reg,mem[addr1_reg]);
+  end
+
+reg [DATA_WIDTH-1:0]    mem [0:RAM_DEPTH-1];
+
+  // Memory Write Block Port 0
+  // Write Operation : When web0 = 0, csb0 = 0
+  always @ (negedge clk0)
+  begin : MEM_WRITE0
+    if ( !csb0_reg && !web0_reg ) begin
+        if (wmask0_reg[0])
+                mem[addr0_reg][7:0] = din0_reg[7:0];
+        if (wmask0_reg[1])
+                mem[addr0_reg][15:8] = din0_reg[15:8];
+        if (wmask0_reg[2])
+                mem[addr0_reg][23:16] = din0_reg[23:16];
+        if (wmask0_reg[3])
+                mem[addr0_reg][31:24] = din0_reg[31:24];
+    end
+  end
+
+  // Memory Read Block Port 0
+  // Read Operation : When web0 = 1, csb0 = 0
+  always @ (negedge clk0)
+  begin : MEM_READ0
+    if (!csb0_reg && web0_reg)
+       dout0 <= #(DELAY) mem[addr0_reg];
+  end
+
+  // Memory Read Block Port 1
+  // Read Operation : When web1 = 1, csb1 = 0
+  always @ (negedge clk1)
+  begin : MEM_READ1
+    if (!csb1_reg)
+       dout1 <= #(DELAY) mem[addr1_reg];
+  end
+
+endmodule
+```
+Now run the below iverilog commands in the terminal:  
+```
+iverilog -o test_uart testbench.v synth_test_asic.v sky130_sram_1kbyte_1rw1r_32x256_8_uart.v sky130_fd_sc_hd.v primitives.v
+./test_uart
+gtkwave waveform_uart.vcd
+```
+Below is the output in the gtkwave:  
+![gls_gtkwave_uart](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/5f7c1820-7213-47e3-bcf5-c001f66bf3a9)
+In this case, writing_inst_done will be 1 after the whole instructions are sent via uart and we can see writing_inst_done was initialliy 0 and becomes 1 after certain time.  
+ID_instruction starts fetching the instructions only after writing_inst_done becomes 1 and output in this case is shown below:  
+![gls_gtkwave_uart1](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/6effac0c-1eab-4464-940e-6d712506f561)  
+
+
+
+
+
 ## Acknowledgement   
 
 - Kunal Ghosh, VSD Corp. Pvt. Ltd.
