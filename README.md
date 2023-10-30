@@ -10,7 +10,9 @@
   - [Assembly code conversion](#assembly-code-conversion)
     - [Unique instructions in assembly code](#unique-instructions-in-assembly-code)
   - [C code for debugging using Spike](#c-code-for-debugging-using-spike)
-  - [Functional Simulations](#functional-simulation)  
+  - [Functional Simulations](#functional-simulation)
+  - [GLC Simulations](#gls-simulation)
+    
 
 ## RISCV GNU tool chain
 
@@ -560,6 +562,7 @@ Make sure you have the below files for generating netlist1 -
 - ``` processor.v ```
 - ``` sky130_fd_sc_hd.v ```
 - ``` primitives.v ```
+  
 Before performing Yosys, make sure you comment out below mentioned sram module definations from your processor.v file which was used earlier for functional testing:
 - module sky130_sram_1kbyte_1rw1r_32x256_8_inst
 - module sky130_sram_1kbyte_1rw1r_32x256_8_data
