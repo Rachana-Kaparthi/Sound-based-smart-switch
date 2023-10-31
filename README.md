@@ -1042,6 +1042,25 @@ Here is output in the gtkwave :
 
 It can be clearly seen that, in this case writing_inst_done is set to 1 from the very beginning of the simulation and output is seen as expected similar to that of the functional simulation.
 
+As already seen in the [assembly code](#assembly-code-conversion) conversion section,  
+
+```10064:	ffe00793          	li	a5,-2  ```  
+
+sensor_input is read by the processor when the ID_instruction is ffe00793 and the same can be observed in the gtkwave output waveform at multiple instances as shown below -  
+![ID_inst1](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/caf529a2-6205-452d-bb94-7da29daa4c82 "Figure 1")   
+![ID_inst2](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/bdefa8a9-9187-4237-98f2-d0777a1d4241 "Figure 2")  
+In figure 2, it can be seen that as long as sensor_input is 0[case A, case B], processor compares it with 1, breaks on not equal to 1 and returns to sensor read operation which is   
+``` 10084:	fef710e3          	bne	a4,a5,10064 <main+0x10> ```  
+According to assembly code, x30 register is modified with the indicator output when processor excecutes the below instruction and the same is shown in gtkwave 
+``` 100a4:	00ff6f33          	or	t5,t5,a5 ```
+![ID_inst3](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/31ae60e3-0c91-48c0-8cf4-5b2aca81e51c "Figure 3")  
+Next, x30 is modified with bulb output when processor executes ``` 100d0:	00ff6f33          	or	t5,t5,a5 ``` and same is observed in the gtkwave  
+![ID_inst4](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/568e2dbf-8b8b-4704-bd73-eed131739c66 "Figure 4")  
+Finally,indicator is turned off after certain delay when processor executes ``` 10154:	00ef7f33          	and	t5,t5,a4 ```, ideally output should change after this instruction ```10158:	00ff6f33          	or	t5,t5,a5``` but indicator value that is being sent is 0 here, so bitwise or of any number is the number itself. Hence output is observed a little early as shown below  
+![ID_inst5](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/ba7e3251-a365-42ec-af70-0a4857761843 "Figure 5")
+
+In this way, inputs and outputs are observed in gtkwave and verified the order of instructions taking place in accordance with the assembly code generated using GCC compiler.  
+
 
 ## Acknowledgement   
 
