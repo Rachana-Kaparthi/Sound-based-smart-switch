@@ -14,6 +14,7 @@
   - [GLC Simulations](#gls-simulation)
     - [Netlist-1: For testing UART functionality](#netlist-1-for-testing-uart-functionality)
     - [Netlist-2: For performing GLS Simulations bypassing UART](#netlist-2-for-performing-gls-simulations-bypassing-uart)
+    - [Detailed view of ID_instruction](#detailed-view-of-id_instruction)
     
 
 ## RISCV GNU tool chain
@@ -1040,7 +1041,9 @@ Here is output in the gtkwave :
 
 ![gls_gtkwave](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/86cdb230-73e0-4c9f-ad90-9a54dcfc90d4)
 
-It can be clearly seen that, in this case writing_inst_done is set to 1 from the very beginning of the simulation and output is seen as expected similar to that of the functional simulation.
+It can be clearly seen that, in this case writing_inst_done is set to 1 from the very beginning of the simulation and output is seen as expected similar to that of the functional simulation.  
+
+#### Detailed view of ID_instruction
 
 As already seen in the [assembly code](#assembly-code-conversion) conversion section,  
 
