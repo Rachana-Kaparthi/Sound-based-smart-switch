@@ -1079,7 +1079,7 @@ In this way, inputs and outputs are observed in gtkwave and verified the order o
 ## Acknowledgement   
 
 - Kunal Ghosh, VSD Corp. Pvt. Ltd.
-- Mayank, TA, IIIT B
+- Mayank Kabra (Founder, Chipcron Pvt. Ltd.)
 - Bhargav, Colleague, IIIT B
 - chatgpt
 
