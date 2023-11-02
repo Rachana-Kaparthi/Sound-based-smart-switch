@@ -725,8 +725,8 @@ abc -liberty sky130_fd_sc_hd__tt_025C_1v80_256.lib
 write_verilog synth_test_processor.v
 ```
 A verilog file gets created in you folder with the name ```synth_test_processor.v```. Now change the name of the module sky130_sram_1kbyte_1rw1r_32x256_8 to sky130_sram_1kbyte_1rw1r_32x256_8_data and sky130_sram_1kbyte_1rw1r_32x256_8 to sky130_sram_1kbyte_1rw1r_32x256_8_inst in the generated synth_test_processor.v file.  
-Secondly change the contents of testbench file similar to this file [testbench_bypass.v](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/blob/main/testbench_bypassuart.v)
-Next make sure you have the definition of sky130_sram_1kbyte_1rw1r_32x256_8_data and sky130_sram_1kbyte_1rw1r_32x256_8_inst in a file in your folder, for this create a file named  ```sky130_sram_1kbyte_1rw1r_32x256_8.v```  with the below contents:   
+Secondly change the contents of testbench file similar to this file [testbench_bypassuart.v](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/blob/main/testbench_bypassuart.v)
+Next make sure you have the definition of sky130_sram_1kbyte_1rw1r_32x256_8_data and sky130_sram_1kbyte_1rw1r_32x256_8_inst modules in a file in your folder, for this create a file named  ```sky130_sram_1kbyte_1rw1r_32x256_8.v```  with the below contents:   
 
 ```
 // OpenRAM SRAM model
