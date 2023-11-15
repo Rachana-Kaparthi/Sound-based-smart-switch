@@ -16,7 +16,13 @@
     - [Netlist-2: For performing GLS Simulations bypassing UART](#netlist-2-for-performing-gls-simulations-bypassing-uart)
     - [Detailed view of ID_instruction](#detailed-view-of-id_instruction)
   - [Physical Design Using Openlane](#physical-design-using-openlane)
-    
+    - [Design steps using Openlane](#design-steps-using-openlane)
+    	- [Invoking Openlane](#invoking-openlane)
+        - [Synthesis](#synthesis)
+        - [Floorplan](#floorplan)
+        - [Placement](#placement)
+        - [CTS](#CTS)
+        - [Routing](#Routing)
 
 ## RISCV GNU tool chain
 
@@ -1225,13 +1231,17 @@ magic -T /home/rachana/open_pdks/sky130/magic/sky130.tech lef read ../../tmp/mer
 ![magic_routing](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/a7a22b3e-fdac-4a38-b0e6-bf57aee976d9)
 ![routing_zoomed_in](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/c33f24c8-8a4c-4b52-93fa-483d568c5966)  
 **Area of the design**  
-![area_of_design](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/99d33bee-6396-4606-b545-be6dc2ed0a62)  
+![area_of_design](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/99d33bee-6396-4606-b545-be6dc2ed0a62)   
+
 **Timing Report post Routing**  
-![routing_timing_report](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/d205bed9-2aac-4ef1-9519-5b85725aa607)  
+![routing_timing_report](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/d205bed9-2aac-4ef1-9519-5b85725aa607)   
+
 **Area Report post Routing**  
-![routing_area_report](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/b80b7b7d-b129-4ee4-af62-7bff00b62e4f)
+![routing_area_report](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/b80b7b7d-b129-4ee4-af62-7bff00b62e4f)  
+
 **Skew Report post Routing**  
-![routing_skew_report](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/1e7bdd50-f98a-4731-b1cd-5c58f95bc998)
+![routing_skew_report](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/1e7bdd50-f98a-4731-b1cd-5c58f95bc998)  
+
 **Power Report post Routing**  
 ![routing_power_report](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/8da5f6a5-e527-45cf-ab1d-5b180c0584c5)
 
@@ -1246,7 +1256,6 @@ Max Performance =  -----------------------------
                      clock period - slack(setup)
 Max Performance = 27.24 Mhz
 ```
-
 
 #### Magic 
 ```
