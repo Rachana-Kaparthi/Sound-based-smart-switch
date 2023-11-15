@@ -1162,6 +1162,16 @@ prep -design clap_switch
 
 #### Synthesis  
 
+The main aim of synthesis in the Place and Route (PNR) flow is to transform a high-level hardware description, typically represented in RTL (Register Transfer Level), into a gate-level netlist that can be physically implemented on an integrated circuit (IC).  
+Here are the primary goals and tasks of synthesis in the PNR flow:
+
+Logic Translation:
+
+Synthesis translates the RTL description of the digital design into a gate-level netlist. The RTL code describes the functional behavior of the design using high-level constructs, while the gate-level netlist represents the design in terms of logic gates and flip-flops.
+Technology Mapping:
+
+During synthesis, the tool selects specific gates and flip-flops from the target technology library to implement the logical functions described in the RTL. This process involves mapping the abstract RTL constructs to the available library cells.
+
 ```
 run_synthesis
 ```
@@ -1172,6 +1182,42 @@ run_synthesis
 
 
 #### Floorplan  
+
+The main aim of the floorplanning stage in the Place and Route (PNR) flow is to define the physical organization of the integrated circuit (IC) on the chip, allocating space for different functional blocks and guiding the subsequent placement and routing stages.  
+Here are the main goals and objectives of floorplanning in the PNR flow:
+
+Area Allocation:    
+
+Floorplanning involves dividing the chip area into different regions to allocate space for various functional blocks, such as the core logic, I/O pads, clock distribution network, and memory. This step helps ensure efficient use of available silicon real estate.  
+
+Aspect Ratio Determination:  
+
+The floorplan defines the aspect ratio of the chip, specifying the width and height of the chip. The aspect ratio is important for meeting the overall design goals and constraints.  
+
+Power Planning:  
+
+Floorplanning considers power distribution requirements. Power grids, which supply power to different regions of the chip, are planned to ensure a uniform and reliable power supply, minimizing voltage drop and meeting power integrity requirements.  
+
+Signal Planning:  
+
+The floorplan outlines the global routing channels for signals between different functional blocks. By defining signal tracks and spaces, floorplanning helps guide the subsequent placement and routing stages, reducing congestion and facilitating efficient signal routing.  
+
+I/O Placement:  
+
+The locations of input and output pads (I/O pads) are determined during floorplanning. These pads need to be strategically placed for ease of connectivity with external devices and to minimize signal delays.  
+
+Clock Tree Planning:  
+
+The floorplan guides the initial placement of clock distribution elements, such as clock buffers, to support the subsequent Clock Tree Synthesis (CTS) stage. Proper planning helps in achieving low skew and efficient clock distribution across the chip.  
+
+Hierarchy Consideration:  
+
+For large and complex designs, floorplanning takes into account the hierarchical structure of the design. It may involve partitioning the design into smaller blocks, each with its own floorplan, and then integrating these blocks into the overall chip floorplan.  
+
+Constraint Application:  
+
+Floorplanning incorporates various design constraints, such as area constraints, power constraints, and placement constraints. Meeting these constraints is crucial for achieving a physically realizable and manufacturable design.  
+
 ```
 run_floorplan
 ```
@@ -1190,6 +1236,16 @@ magic -T /home/rachana/open_pdks/sky130/magic/sky130.tech lef read ../../tmp/mer
 
 
 #### Placement  
+
+The main goal of placement is to determine the physical locations of synthesized logic elements (cells) on the IC chip.It involves deciding where each logic element should be placed on the chip, considering factors such as area utilization, timing constraints, and power consumption.  
+
+Key Considerations:  
+
+- Area Utilization: Placement aims to efficiently use the available silicon area on the chip.
+- Timing Constraints: It influences the physical distances between logic elements, impacting signal propagation delays.
+- Power Consumption: Placement decisions can affect power consumption, and optimization strategies may be applied.
+- Hierarchy: For complex designs, hierarchical considerations may influence placement decisions.
+
 ```
 run_placement
 ```
@@ -1200,6 +1256,10 @@ magic -T /home/rachana/open_pdks/sky130/magic/sky130.tech lef read ../../tmp/mer
 ![magic_placement](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/fa61d674-0dd3-4192-a12e-97118437db5d)  
 
 #### CTS  
+Clock tree synteshsis is used to create the clock distribution network that is used to deliver the clock to all sequential elements. The main goal is to create a network with minimal skew across the chip. H-trees are a common network topology that is used to achieve this goal.
+
+The purpose of building a clock tree is enable the clock input to reach every element and to ensure a zero clock skew. H-tree is a common methodology followed in CTS.  
+
 ```
 run_cts
 ```
@@ -1219,6 +1279,15 @@ run_cts
 
 
 #### Routing  
+The main goal of routing is to establish physical connections (interconnections or wires) between the placed logic elements on the IC chip.It involves creating the metal traces that connect the outputs of one logic element to the inputs of another, facilitating the flow of signals.  
+
+Key Considerations:  
+
+- Wirelength: Routing aims to minimize the total wirelength of interconnections, reducing resistance and capacitance.
+- Timing Closure: Routing plays a critical role in achieving timing closure by ensuring that signal paths meet the specified timing constraints.
+- Congestion Management: Routing algorithms manage congestion to avoid issues associated with high-density interconnections in specific regions.
+- Signal Integrity: Routing aims to preserve signal integrity by minimizing signal distortions and noise.
+  
 ```
 run_routing
 ```
