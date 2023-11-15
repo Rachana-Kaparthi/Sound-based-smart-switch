@@ -1196,29 +1196,13 @@ Aspect Ratio Determination:
 
 The floorplan defines the aspect ratio of the chip, specifying the width and height of the chip. The aspect ratio is important for meeting the overall design goals and constraints.  
 
-Power Planning:  
-
-Floorplanning considers power distribution requirements. Power grids, which supply power to different regions of the chip, are planned to ensure a uniform and reliable power supply, minimizing voltage drop and meeting power integrity requirements.  
-
-Signal Planning:  
-
-The floorplan outlines the global routing channels for signals between different functional blocks. By defining signal tracks and spaces, floorplanning helps guide the subsequent placement and routing stages, reducing congestion and facilitating efficient signal routing.  
-
 I/O Placement:  
 
 The locations of input and output pads (I/O pads) are determined during floorplanning. These pads need to be strategically placed for ease of connectivity with external devices and to minimize signal delays.  
 
-Clock Tree Planning:  
-
-The floorplan guides the initial placement of clock distribution elements, such as clock buffers, to support the subsequent Clock Tree Synthesis (CTS) stage. Proper planning helps in achieving low skew and efficient clock distribution across the chip.  
-
 Hierarchy Consideration:  
 
 For large and complex designs, floorplanning takes into account the hierarchical structure of the design. It may involve partitioning the design into smaller blocks, each with its own floorplan, and then integrating these blocks into the overall chip floorplan.  
-
-Constraint Application:  
-
-Floorplanning incorporates various design constraints, such as area constraints, power constraints, and placement constraints. Meeting these constraints is crucial for achieving a physically realizable and manufacturable design.  
 
 ```
 run_floorplan
