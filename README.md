@@ -15,6 +15,7 @@
     - [Netlist-1: For testing UART functionality](#netlist-1-for-testing-uart-functionality)
     - [Netlist-2: For performing GLS Simulations bypassing UART](#netlist-2-for-performing-gls-simulations-bypassing-uart)
     - [Detailed view of ID_instruction](#detailed-view-of-id_instruction)
+  - [Physical Design Using Openlane](#physical-design-using-openlane)
     
 
 ## RISCV GNU tool chain
@@ -1073,7 +1074,89 @@ but indicator value that is being sent is 0 here, so bitwise or of any number is
 
 ![ID_inst5](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/ba7e3251-a365-42ec-af70-0a4857761843 "Figure 5")
 
-In this way, inputs and outputs are observed in gtkwave and verified the order of instructions taking place in accordance with the assembly code generated using GCC compiler.  
+In this way, inputs and outputs are observed in gtkwave and verified the order of instructions taking place in accordance with the assembly code generated using GCC compiler.    
+
+## Physical Design Using Openlane
+OpenLane is an automated RTL to GDSII flow based on several components including OpenROAD, Yosys, Magic, Netgen, CVC, SPEF-Extractor, KLayout and a number of custom scripts for design exploration and optimization. It also provides a number of custom scripts for design exploration and optimization.  
+
+Detailed steps on installation of required tools can be seen [here](https://github.com/Rachana-Kaparthi/ADVANCED-PHYSICAL-DESIGN-USING-OPENLANE-SKY130/edit/main/README.md#day-1---inception-of-open-source-edaopenlane-and-sky130-pdk)
+
+The Place and Route (PNR) flow is a crucial step in the physical design process of creating integrated circuits. It involves placing the synthesized logic elements onto the chip and routing the interconnections between these elements. The Place and Route flow is a key stage in turning a high-level hardware description into a physical design that can be fabricated.    
+
+Here's an overview of the typical PNR flow:
+
+*Synthesis:*
+
+Convert your RTL code into a gate-level netlist using synthesis tools such as Yosys. This step generates a logical representation of your design using standard cells from a library.  
+
+*Floor Planning:*
+
+Define the physical layout of the chip, including the placement of functional blocks, I/O pads, and power grid distribution. This step helps determine the chip's overall size and shape.  
+
+*Power Planning:*
+
+Implement the power distribution network to provide stable power to all parts of the design while minimizing voltage drop. Tools like OpenSTA can be used for static timing analysis to ensure proper power distribution.  
+Placement:
+
+Place the synthesized logical cells onto the chip's floorplan. Tools like RePLace or Graywolf can be used for placement.  
+Placement is usually done in two steps:  
+
+- Global Placement
+- Detailed PLacement
+
+*Clock Tree Synthesis (CTS):*
+
+Generate a clock distribution network that ensures clock signals reach all parts of the design with minimal skew. Typically, OpenLane's TritonCTS is used for this purpose.It ususally takes the shape of a tree..  
+
+*Routing:*
+
+Create the physical interconnections (metal layers) between the placed cells while adhering to design rules. This step is performed using a router like FastRoute or TritonRoute.  
+Metal Layer form a routing grid which is huge, hence we use divide and conquer methodology for routing grid.  
+Global Routing: Generates routing grids  
+Detailed Routing: Uses the routing guides to implement the actual wiring  
+
+*Sign Off:*  
+
+This includes physical and Timing verifications.  
+- *Physical verifications:*
+  - *Design Rule Checking (DRC):*
+    - Verify that the chip layout adheres to the manufacturing process's design rules. DRC tools like Magic or KLayout are commonly used for this purpose.
+  - *Layout vs. Schematic (LVS) Check:*
+    - Ensure that the final layout matches the original schematic. LVS tools like Netgen or Calibre are used to compare the netlist extracted from the layout with the synthesized netlist.
+- *Timing verifications:*
+  - *Static Timing Analysis (STA):*
+    - Analyze the timing characteristics of your design to ensure that all setup and hold time requirements are met. OpenSTA is commonly used in the OpenLane flow for STA.
+### Design steps using Openlane  
+
+Before starting of with the design make sure you have all the required libraries, lef files needed for the design. Required files for this design can be seen [here]()  
+After cloning the openlane related files from github, go to designs folder and create a folder with the name clap_switch inside which place all the required extra lef, lib files and verilog files under src folder inside clap_switch. Now, place congif.json file inside clap+switch folder and outside src.  Structure should look like below:  
+```
+clap_switch
+|__ config.json
+|__ macro_placement.cfg
+|__ src
+|   |__ processor.v
+|   |__ sky130_fd_sc_hd.v
+|   |__ sky130_sram_1kbyte_1rw1r_32x256_8.gds
+|   |__ sky130_sram_1kbyte_1rw1r_32x256_8.lef  
+|   |__ sky130_sram_1kbyte_1rw1r_32x256_8.v
+|   |__ sky130_sram_1kbyte_1rw1r_32x256_8_TT_1p8V_25C.lib
+|   |__ other lib files and lef files 
+```
+#### Invoking Openlane  
+Use the below commands to invoke Openlane in the linux terminal  
+```
+cd ~/OpenLane
+make mount
+./flow.tcl -interactive
+```
+
+#### Synthesis  
+```
+package require openlane 0.9
+prep -design clap_switch
+run_synthesis
+```
 
 
 ## Acknowledgement   
