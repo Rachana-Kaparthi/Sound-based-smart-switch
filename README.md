@@ -1128,7 +1128,7 @@ This includes physical and Timing verifications.
     - Analyze the timing characteristics of your design to ensure that all setup and hold time requirements are met. OpenSTA is commonly used in the OpenLane flow for STA.
 ### Design steps using Openlane  
 
-Before starting of with the design make sure you have all the required libraries, lef files needed for the design. Required files for this design can be seen [here]()  
+Before starting of with the design make sure you have all the required libraries, lef files needed for the design. Required files for this design can be seen [here](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/tree/main/clap_switch)  
 After cloning the openlane related files from github, go to designs folder and create a folder with the name clap_switch inside which place all the required extra lef, lib files and verilog files under src folder inside clap_switch. Now, place congif.json file inside clap+switch folder and outside src.  Structure should look like below:  
 ```
 clap_switch
@@ -1149,13 +1149,142 @@ Use the below commands to invoke Openlane in the linux terminal
 cd ~/OpenLane
 make mount
 ./flow.tcl -interactive
-```
-
-#### Synthesis  
-```
 package require openlane 0.9
 prep -design clap_switch
+```  
+![openlane_launch](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/8cdf9f43-5316-4534-af17-c1b5751f282c)
+
+#### Synthesis  
+
+```
 run_synthesis
+```
+![run_synthesis](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/9c87bb99-c249-4b45-ab27-faf26504518d)    
+
+**Statistics after Synthesis:**  
+![synthesis_chip_are](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/1d6009d9-606d-494e-8ad7-99aaa3572ac1)
+
+
+#### Floorplan  
+```
+run_floorplan
+```
+![run_floorplan](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/cd1e6607-ade2-4a1d-a847-a158b54ec7ea)
+- Post the floorplan run, a .def file will have been created within the results/floorplan directory.
+- We may review floorplan files by checking the floorplan.tcl.
+To view the floorplan, Magic is invoked after moving to the results/floorplan directory,then use the following command:
+```
+magic -T /home/rachana/open_pdks/sky130/magic/sky130.tech lef read ../../tmp/merged.max.lef def read wrapper.def &
+```
+![magic_floorplan](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/c42b640d-ef80-4e69-a7ec-e8eff274fc11)
+
+**Die Area and Core area reports post floorplan:**  
+![die_area_report_fp](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/2eb2a0db-fca9-4f94-b366-a70bf910ddb6)  
+![core_area_report](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/110a0960-d34b-4808-8faf-a729e14a9f5e)
+
+
+#### Placement  
+```
+run_placement
+```
+Post placement, the design can be viewed on magic within results/placement directory. Run the following command in that directory:  
+```
+magic -T /home/rachana/open_pdks/sky130/magic/sky130.tech lef read ../../tmp/merged.max.lef def read wrapper.def &
+```
+![magic_placement](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/fa61d674-0dd3-4192-a12e-97118437db5d)  
+
+#### CTS  
+```
+run_cts
+```
+![run_cts](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/34a53442-b4df-4b67-989a-40ce16080015)    
+
+**Timing reports:**  
+![setup_hold_cts](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/4cca9204-a1a9-4b7b-8770-eb487771b611)  
+
+**Area Report:**  
+![image](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/0d48e139-878c-466d-8af3-977ce4691462)  
+
+**Skew report:**  
+![cts_skew_report](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/bda2b4e5-14f2-4df3-b724-2d290b4e9657)  
+
+**Power Report:**  
+![cts_power_report](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/ad9e2834-f981-413e-932b-f0d632adfa46)
+
+
+#### Routing  
+```
+run_routing
+```
+![run_routing](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/8c872397-0476-4842-8d39-ea00df57b473)   
+
+Layout in magic tool post routing: The design can be viewed on magic within results/routing directory. Run the following command in that directory:  
+```
+magic -T /home/rachana/open_pdks/sky130/magic/sky130.tech lef read ../../tmp/merged.max.lef def read wrapper.def &
+```
+![magic_routing](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/a7a22b3e-fdac-4a38-b0e6-bf57aee976d9)
+![routing_zoomed_in](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/c33f24c8-8a4c-4b52-93fa-483d568c5966)  
+**Area of the design**  
+![area_of_design](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/99d33bee-6396-4606-b545-be6dc2ed0a62)  
+**Timing Report post Routing**  
+![routing_timing_report](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/d205bed9-2aac-4ef1-9519-5b85725aa607)  
+**Area Report post Routing**  
+![routing_area_report](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/b80b7b7d-b129-4ee4-af62-7bff00b62e4f)
+**Skew Report post Routing**  
+![routing_skew_report](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/1e7bdd50-f98a-4731-b1cd-5c58f95bc998)
+**Power Report post Routing**  
+![routing_power_report](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/8da5f6a5-e527-45cf-ab1d-5b180c0584c5)
+
+**Reporting zero DRC Violations**  
+![drc_violations_routing](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/ec5f52fd-429a-4c78-b6ae-6da5d04beaee)
+
+**Performance Calculation**  
+We have given Clock period of 50ns in config.json file , setup slack we got after routing is 13.29ns  
+```
+                              1
+Max Performance =  -----------------------------
+                     clock period - slack(setup)
+Max Performance = 27.24 Mhz
+```
+
+
+#### Magic 
+```
+run_magic
+run_magic_spice_export
+run_magic_drc
+run_netgen
+run_magic_antenna_check
+```
+
+![run_magic](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/9441da0a-db3c-4c4a-8868-b486ebab7751)
+
+### VLSI INTERACTIVE OPENLANE FLOW
+
+```
+
+cd OpenLane/ 
+make mount 
+{ If Error occurs use the below commands in OpenLane directory:
+sudo chown $USER /var/run/docker.sock 
+PYTHON_BIN=python3 make mount
+}
+
+./flow.tcl -interactive
+package require openlane 0.9
+prep -design picorv32a
+run_synthesis
+run_floorplan
+run_placement
+run_cts
+gen_pdn
+run_routing
+run_magic
+run_magic_spice_export
+run_magic_drc
+run_netgen
+run_magic_antenna_check
+
 ```
 
 
