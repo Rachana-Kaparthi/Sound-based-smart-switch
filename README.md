@@ -1357,6 +1357,7 @@ run_magic_antenna_check
 - Kunal Ghosh, VSD Corp. Pvt. Ltd.
 - Mayank Kabra (Founder, Chipcron Pvt. Ltd.)
 - Bhargav, Colleague, IIIT B
+- Alwin Shaju,Colleague, IIIT B
 - chatgpt
 
 ## References
@@ -1366,6 +1367,8 @@ run_magic_antenna_check
 4. https://github.com/SakethGajawada/RISCV_GNU
 5. https://github.com/riscv-collab/riscv-gnu-toolchain
 6. https://github.com/riscv-software-src/riscv-isa-sim
+7. https://github.com/alwinshaju08/IIITB_Waterlevel_detector
+8. https://www.vsdiat.com
 
 
 
