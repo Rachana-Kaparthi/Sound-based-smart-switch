@@ -1163,12 +1163,14 @@ prep -design clap_switch
 #### Synthesis  
 
 The main aim of synthesis in the Place and Route (PNR) flow is to transform a high-level hardware description, typically represented in RTL (Register Transfer Level), into a gate-level netlist that can be physically implemented on an integrated circuit (IC).  
+
 Here are the primary goals and tasks of synthesis in the PNR flow:
 
 Logic Translation:
 
-Synthesis translates the RTL description of the digital design into a gate-level netlist. The RTL code describes the functional behavior of the design using high-level constructs, while the gate-level netlist represents the design in terms of logic gates and flip-flops.
-Technology Mapping:
+Synthesis translates the RTL description of the digital design into a gate-level netlist. The RTL code describes the functional behavior of the design using high-level constructs, while the gate-level netlist represents the design in terms of logic gates and flip-flops.  
+
+Technology Mapping:  
 
 During synthesis, the tool selects specific gates and flip-flops from the target technology library to implement the logical functions described in the RTL. This process involves mapping the abstract RTL constructs to the available library cells.
 
