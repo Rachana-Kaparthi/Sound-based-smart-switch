@@ -64,6 +64,7 @@ Access the riscv32-unknown-elf-gcc inside bin folder of riscv32-toolchain folder
 
 ### Sound Sensor module  
 ![image](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/7cfc76bf-e497-454a-bddf-49163323c745)
+DAOKI High Sensitivity Sound Microphone Sensor Detection Module  
 
 ### Block Diagram  
 ![block-diagram-single-clap-switch](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/assets/140998470/d6584d81-4c49-42c6-830b-5ebf6ba6ca84)
