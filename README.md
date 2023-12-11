@@ -1141,7 +1141,7 @@ This includes physical and Timing verifications.
 ### Design steps using Openlane  
 
 Before starting of with the design make sure you have all the required libraries, lef files needed for the design. Required files for this design can be seen [here](https://github.com/Rachana-Kaparthi/Sound-based-smart-switch/tree/main/clap_switch)  
-After cloning the openlane related files from github, go to designs folder and create a folder with the name clap_switch inside which place all the required extra lef, lib files and verilog files under src folder inside clap_switch. Now, place congif.json file inside clap+switch folder and outside src.  Structure should look like below:  
+After cloning the openlane related files from github, go to designs folder and create a folder with the name clap_switch inside which place all the required extra lef, lib files and verilog files under src folder inside clap_switch. Now, place congif.json file inside clap_switch folder and outside src.  Structure should look like below:  
 ```
 clap_switch
 |__ config.json
