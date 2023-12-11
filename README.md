@@ -1107,7 +1107,8 @@ Define the physical layout of the chip, including the placement of functional bl
 *Power Planning:*
 
 Implement the power distribution network to provide stable power to all parts of the design while minimizing voltage drop. Tools like OpenSTA can be used for static timing analysis to ensure proper power distribution.  
-Placement:
+
+*Placement:*
 
 Place the synthesized logical cells onto the chip's floorplan. Tools like RePLace or Graywolf can be used for placement.  
 Placement is usually done in two steps:  
