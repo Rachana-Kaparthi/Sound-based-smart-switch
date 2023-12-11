@@ -1114,11 +1114,11 @@ Place the synthesized logical cells onto the chip's floorplan. Tools like RePLac
 Placement is usually done in two steps:  
 
 - Global Placement
-- Detailed PLacement
+- Detailed Placement
 
 *Clock Tree Synthesis (CTS):*
 
-Generate a clock distribution network that ensures clock signals reach all parts of the design with minimal skew. Typically, OpenLane's TritonCTS is used for this purpose.It ususally takes the shape of a tree..  
+Generate a clock distribution network that ensures clock signals reach all parts of the design with minimal skew. Typically, OpenLane's TritonCTS is used for this purpose.It ususally takes the shape of a tree.  
 
 *Routing:*
 
